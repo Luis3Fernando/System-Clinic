@@ -1,0 +1,80 @@
+{% extends 'generic_admin.html' %}
+
+{% block title %}Usuarios{% endblock %}
+{% block extra_css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/administrador/form-client.css' %}">
+{% endblock %}
+
+{% block user_active %}active{% endblock %}
+
+{% block profile_icon %}
+<img src="{% static 'icon/client-color.png' %}" alt="usuario">
+{% endblock %}
+
+{% block content %}
+<div class="container-form">
+    <h1>Modificar Paciente</h1>
+    <form action="{% url 'actualizar-cliente' cliente.id %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="form-group">
+                <label for="dni">DNI</label>
+                <input type="text" id="dni" name="dni" value="{{ cliente.dni }}" required>
+            </div>
+            <div class="form-group">
+                <label for="foto-perfil">Foto de Perfil (JPG)</label>
+                <input type="file" id="foto-perfil" name="foto-perfil" accept=".jpg">
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" value="{{ cliente.nombre }}" required>
+            </div>
+            <div class="form-group">
+                <label for="apellido">Apellido</label>
+                <input type="text" id="apellido" name="apellido" value="{{ cliente.apellidos }}" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <label for="fecha-nacimiento">Fecha de Nacimiento</label>
+                <input type="date" id="fecha-nacimiento" name="fecha-nacimiento" value="{{ cliente.fecha_nacimiento|date:'Y-m-d' }}" required>
+            </div>
+            <div class="form-group">
+                <label for="genero">Género</label>
+                <select id="genero" name="genero" required>
+                    <option value="Masculino" {% if cliente.genero == "Masculino" %}selected{% endif %}>Masculino</option>
+                    <option value="Femenino" {% if cliente.genero == "Femenino" %}selected{% endif %}>Femenino</option>
+                    <option value="Otro" {% if cliente.genero == "Otro" %}selected{% endif %}>Otro</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <label for="celular">Celular</label>
+                <input type="tel" id="celular" name="celular" value="{{ cliente.celular }}" required>
+            </div>
+            <div class="form-group">
+                <label for="correo">Correo</label>
+                <input type="email" id="correo" name="correo" value="{{ cliente.email }}" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <label for="direccion">Dirección</label>
+                <input type="text" id="direccion" name="direccion" value="{{ cliente.direccion }}" required>
+            </div>
+            <div class="form-group">
+                <label for="ocupacion">Ocupacion</label>
+                <input type="text" id="ocupacion" name="ocupacion" value="{{ cliente.ocupacion }}" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Actualizar">
+        </div>
+    </form>
+</div>
+
+{% endblock %}

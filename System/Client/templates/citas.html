@@ -1,0 +1,65 @@
+{% extends 'generic.html' %}
+
+{% block title %}Citas{% endblock %}
+{% block extra_css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/cliente/citas.css' %}">
+{% endblock %}
+
+{% block cita_active %}active{% endblock %}
+
+{% block cita_icon %}
+<img src="{% static 'icon/cita-color.png' %}" alt="citas">
+{% endblock %}
+
+{% block content %}
+<h1>Horario de Citas</h1>
+<div class="top-detail">
+    <h3>{{today}}</h3>
+</div>
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th>Horas</th>
+                {% for day in days_of_week %}
+                        <th {% if day.name == day_current %}class="current-day"{% endif %}>
+                            {{ day.number }} <br> {{ day.name }}
+                        </th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in schedule_table %}
+                    <tr>
+                        <td><span class="hora">{{ row.hour }}</span></td>
+                        {% for slot in row.slots %}    
+                            {% if slot %} 
+                            <td>
+                                {% if slot.0.estado == "completada" %}
+                                <div class="card" data-cita-id="{{ slot.0.id }}" id="succes">
+                                    <p>{{ slot.0.servicio }}</p>
+                                    <p>{{ slot.0.hora_inicio }}</p>
+                                </div>
+                                 {% elif slot.0.estado == "programada" %}
+                                 <div class="card" data-cita-id="{{ slot.0.id }}" id="pendent">
+                                    <p>{{ slot.0.servicio }}</p>
+                                    <p>{{ slot.0.hora_inicio }}</p>
+                                </div>
+                                 {% else %}
+                                 <div class="card" data-cita-id="{{ slot.0.id }}" id="cancel">
+                                    <p>{{ slot.0.servicio }}</p>
+                                    <p>{{ slot.0.hora_inicio }}</p>
+                                </div>
+                                 {% endif %}
+                            </td>
+                            {% else %}
+                                <td>-</td>
+                            {% endif %}
+                        {% endfor %}
+                    </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

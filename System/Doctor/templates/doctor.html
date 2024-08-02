@@ -1,0 +1,101 @@
+{% extends 'generic_doctor.html' %}
+
+{% block title %}Inicio{% endblock %}
+{% block extra_css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/cliente/main.css' %}">
+{% endblock %}
+
+{% block home_active %}active{% endblock %}
+
+{% block home_icon %}
+<img src="{% static 'icon/hogar-color.png' %}" alt="Home">
+{% endblock %}
+
+{% block content %}
+<div class="content-home">
+    <div class="left-home">
+        <div class="left-header">
+            <h2>¡Hola {%if doctor.genero == 'Masculino'%} Dr {%else%} Dra {%endif%}  {{doctor.nombre}}!</h2>
+            <p>Bienvenido a Aless Dent</p>
+            <img src="{% static 'img/nurse-home.png'%}" alt="">
+        </div>
+        <div class="left-main">
+            <h3>Estadisticas</h3>
+            <div>
+                <div id="atendido">
+                    <p>Completadas</p>
+                    <h1>{{citas_completadas}}</h1>
+                </div>
+                <div id="pendiente">
+                    <p>Pendientes</p>
+                    <h1>{{citas_programadas}}</h1>
+                </div>
+                <div id="emergencia">
+                    <p>Emergencia</p>
+                    <h1>{{citas_canceladas}}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="left-footer">
+            <button onclick="window.location.href='{% url 'agregar-cita-doctor' %}'">
+                <img src="{% static 'icon/history-color.png'%}" alt="">
+                <h2>Agendar Cita</h2>
+            </button>
+
+            <button onclick="window.location.href='{% url 'agregar-reporte' %}'">
+                <img src="{% static 'icon/facture-color.png'%}" alt="">
+                <h2>Generar Reporte</h2>
+            </button>
+        </div>
+    </div>
+    <div class="right-home">
+        <div class="right-header">
+            <div class="right-header-edit">
+                <h2>Mi perfil</h2>
+                <!--
+                <button><img src="{% static 'icon/lapiz.png'%}" alt=""></button>-->
+            </div>
+            <div class="right-header-profile">
+                <img src="{{doctor.foto_perfil.url}}" alt="">
+                <div>
+                    <h2>{{doctor.nombre}}</h2>
+                    <span>{{doctor.apellidos}}</span>
+                </div>
+            </div>
+            <div class="right-header-details">
+                <div>
+                    <h2>Dirección</h2>
+                    <span>{{doctor.direccion}}</span>
+                </div>  
+                <div>
+                    <h2>Celular</h2>
+                    <span>{{doctor.celular}}</span>
+                </div>
+                <div>
+                    <h2>Especialidad</h2>
+                    <span>{{doctor.especialidad}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="right-footer">
+            <h2>Citas para hoy</h2>
+            <div class="scroll-content-citas">
+                {%for cita in citas%}
+                <div>
+                    <div>
+                        <p>{{cita.servicio}}</p>
+                        <p>{{cita.hora_inicio}}</p>
+                    </div>
+                    <div>
+                        <span>
+                            Paciente: {{cita.paciente.nombre}} {{cita.paciente.apellidos}}
+                        </span>
+                    </div>
+                </div>
+                {%endfor%}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

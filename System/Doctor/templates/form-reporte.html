@@ -1,0 +1,56 @@
+{% extends 'generic_doctor.html' %}
+
+{% block title %}Crear Reporte{% endblock %}
+{% block extra_css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/doctor/form-reporte.css' %}">
+{% endblock %}
+
+{% block report_active %}active{% endblock %}
+
+{% block report_icon %}
+<img src="{% static 'icon/report-color.png' %}" alt="reporte">
+{% endblock %}
+
+{% block content %}
+    <h1 class="titulo">Crear Reporte</h1>
+    <div class="reporte-form">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_cita">Cita</label>
+                    <select name="cita" id="id_cita">
+                        <option value="">Seleccione una cita</option>
+                        {% for cita in citas %}
+                            <option value="{{ cita.id }}">{{ cita.paciente.nombre }} {{ cita.paciente.apellidos }} - {{ cita.fecha }} - {{cita.servicio}}</option>
+                        {% endfor %}
+                    </select>
+                    {% if errors.cita %}
+                        <p class="error">{{ errors.cita }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_informacion">Información</label>
+                    <textarea name="informacion" id="id_informacion" rows="5">{{ request.POST.informacion }}</textarea>
+                    {% if errors.informacion %}
+                        <p class="error">{{ errors.informacion }}</p>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="id_problemas">Problemas Detectados</label>
+                    <textarea name="problemas" id="id_problemas" rows="5">{{ request.POST.problemas }}</textarea>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_recomendaciones">Recomendaciones</label>
+                    <textarea name="recomendaciones" id="id_recomendaciones" rows="5">{{ request.POST.recomendaciones }}</textarea>
+                </div>
+            </div>
+            <button type="submit">Guardar Reporte</button>
+        </form>
+    </div>
+{% endblock %}

@@ -1,0 +1,223 @@
+from django.shortcuts import render, redirect, get_object_or_404
+from Home.models import Doctor, Paciente, Cita
+from django.core.files.storage import FileSystemStorage
+from django.http import HttpResponseForbidden
+import datetime
+from django.contrib.auth.models import User
+from django.db.models import Count
+
+def formatear_fecha_actual():
+    meses = [
+        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+        "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+    ]
+    hoy = datetime.date.today()
+    mes = meses[hoy.month - 1]
+    return f"{mes} {hoy.day} de {hoy.year}"
+
+def Administrador(request):
+    total_doctores = Doctor.objects.count()
+    total_pacientes = Paciente.objects.count()
+    citas = Cita.objects.all()
+    
+    citas_programadas = Cita.objects.filter(estado='programada').count()
+    citas_completadas = Cita.objects.filter(estado='completada').count()
+    citas_canceladas = Cita.objects.filter(estado='cancelada').count()
+    
+    
+    context = {
+        'total_doctores': total_doctores,
+        'total_pacientes': total_pacientes,
+        'citas_programadas': citas_programadas,
+        'citas_completadas': citas_completadas,
+        'citas_canceladas': citas_canceladas,
+        'fecha': formatear_fecha_actual(),
+        'citas': citas
+    }
+    return render(request, 'administrador.html', context)
+
+def Usuarios(request):
+    clientes = Paciente.objects.annotate(total_citas=Count('cita'))
+        
+    context = {
+        'clients': clientes
+    }
+    return render(request, 'usuarios.html' , context)
+
+def Doctores(request):
+    doctors = Doctor.objects.annotate(total_citas=Count('cita'))
+    
+    return render(request, 'doctores.html', {'doctors': doctors})
+
+def Doctor_admin(request, id):
+    doctor = get_object_or_404(Doctor, id=id)
+    return render(request, 'admin-doctor.html', {'doctor': doctor})
+
+def ver_cv(request, id):
+    doctor = get_object_or_404(Doctor, id=id)
+    return render(request, 'ver_cv.html', {'doctor': doctor})
+
+def Cliente(request, id):
+    client = get_object_or_404(Paciente, id=id)
+    return render(request, 'admin-client.html', {'client': client})
+
+def Form_Doctor(request):
+    if request.method == 'POST':
+        dni = request.POST['dni']
+        nombre = request.POST['nombre']
+        apellidos = request.POST['apellido']
+        genero = request.POST['genero']
+        celular = request.POST['celular']
+        email = request.POST['correo']
+        direccion = request.POST['direccion']
+        especialidad = request.POST['especialidad']
+
+        if 'foto-perfil' in request.FILES:
+            foto_perfil = request.FILES['foto-perfil']
+            fs = FileSystemStorage()
+            foto_perfil_name = fs.save(foto_perfil.name, foto_perfil)
+        else:
+            foto_perfil_name = None
+
+        if 'curriculum' in request.FILES:
+            curriculum = request.FILES['curriculum']
+            fs = FileSystemStorage()
+            curriculum_name = fs.save(curriculum.name, curriculum)
+        else:
+            curriculum_name = None
+        
+        username = f"{nombre.lower()}@{apellidos.lower().replace(' ', '')}"
+        password = f"{dni}{nombre.lower()}"
+
+        user = User.objects.create_user(username=username, password=password, email=email)
+        user.first_name = nombre
+        user.last_name = apellidos
+        user.save()
+
+        doctor = Doctor(
+            user=user,
+            username = username,
+            password= password,
+            dni=dni,
+            nombre=nombre,
+            apellidos=apellidos,
+            genero=genero,
+            celular=celular,
+            email=email,
+            direccion=direccion,
+            especialidad=especialidad,
+            foto_perfil=foto_perfil_name,
+            curriculum=curriculum_name
+        )
+        doctor.save()
+
+        return redirect('doctores')
+
+    return render(request, 'form-doctor.html')
+
+def Form_Client(request):
+    if request.method == 'POST':
+        dni = request.POST['dni']
+        nombre = request.POST['nombre']
+        apellidos = request.POST['apellido']
+        genero = request.POST['genero']
+        celular = request.POST['celular']
+        email = request.POST['correo']
+        direccion = request.POST['direccion']
+        ocupacion = request.POST['ocupacion']
+        
+        if 'foto-perfil' in request.FILES:
+            foto_perfil = request.FILES['foto-perfil']
+            fs = FileSystemStorage()
+            foto_perfil_name = fs.save(foto_perfil.name, foto_perfil)
+        else:
+            foto_perfil_name = None
+        
+        username = f"{nombre.lower()}@{apellidos.lower().replace(' ', '')}"
+        password = f"{dni}{nombre.lower()}"
+
+        user = User.objects.create_user(username=username, password=password, email=email)
+        user.first_name = nombre
+        user.last_name = apellidos
+        user.save()
+
+        nuevo_cliente = Paciente(
+            user=user,
+            username=username,
+            password= password,
+            dni=dni,
+            nombre=nombre,
+            apellidos=apellidos,
+            genero=genero,
+            celular=celular,
+            email=email,
+            direccion=direccion,
+            ocupacion=ocupacion,
+            foto_perfil=foto_perfil_name
+        )
+        nuevo_cliente.save()
+        return redirect('usuarios')
+
+    return render(request, 'form-client.html')
+
+def eliminar_cliente(request, id):
+    if request.method == "POST":
+        cliente = get_object_or_404(Paciente, id=id)
+        cliente.delete()
+        return redirect('usuarios')
+    else:
+        return HttpResponseForbidden("No tienes permiso para realizar esta acción.")
+    
+def eliminar_doctor(request, id):
+    if request.method == "POST":
+        doctor = get_object_or_404(Doctor, id=id)
+        doctor.delete()
+        return redirect('doctores')
+    else:
+        return HttpResponseForbidden("No tienes permiso para realizar esta acción.")
+    
+def editar_cliente(request, id):
+    cliente = get_object_or_404(Paciente, id=id)
+    return render(request, 'editar-cliente.html', {'cliente': cliente})
+
+def actualizar_cliente(request, id):
+    cliente = get_object_or_404(Paciente, id=id)
+    if request.method == 'POST':
+        cliente.dni = request.POST['dni']
+        cliente.nombre = request.POST['nombre']
+        cliente.apellidos = request.POST['apellido']
+        cliente.fecha_nacimiento = request.POST['fecha-nacimiento']
+        cliente.genero = request.POST['genero']
+        cliente.celular = request.POST['celular']
+        cliente.email = request.POST['correo']
+        cliente.direccion = request.POST['direccion']
+        cliente.ocupacion = request.POST['ocupacion']
+        if 'foto-perfil' in request.FILES:
+            cliente.foto_perfil = request.FILES['foto-perfil']
+        cliente.save()
+        return redirect('usuarios') 
+    return render(request, 'editar-cliente.html', {'cliente': cliente})
+
+def editar_doctor(request, id):
+    doctor = get_object_or_404(Doctor, id=id)
+    return render(request, 'editar-doctor.html', {'doctor': doctor})
+
+def actualizar_doctor(request, id):
+    doctor = get_object_or_404(Doctor, id=id)
+    if request.method == 'POST':
+        doctor.dni = request.POST['dni']
+        doctor.nombre = request.POST['nombre']
+        doctor.apellidos = request.POST['apellido']
+        doctor.genero = request.POST['genero']
+        doctor.celular = request.POST['celular']
+        doctor.email = request.POST['correo']
+        doctor.direccion = request.POST['direccion']
+        doctor.especialidad = request.POST['especialidad']
+        if 'foto-perfil' in request.FILES:
+            doctor.foto_perfil = request.FILES['foto-perfil']
+        if 'curriculum' in request.FILES:
+            doctor.curriculum = request.FILES['curriculum']
+        doctor.save()
+        return redirect('doctores')
+    return render(request, 'editar-doctor.html', {'doctor': doctor})
+

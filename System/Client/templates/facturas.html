@@ -1,0 +1,79 @@
+{% extends 'generic.html' %}
+
+{% block title %}Facturas{% endblock %}
+{% block extra_css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/cliente/facturas.css' %}">
+{% endblock %}
+
+{% block facture_active %}active{% endblock %}
+
+{% block facture_icon %}
+<img src="{% static 'icon/facture-color.png' %}" alt="facturas">
+{% endblock %}
+
+{% block content %}
+<header>
+    <h1>Historial de Facturas</h1>
+    <div>
+        <img src="{% static 'icon/busqueda.png'%}" alt="busqueda">
+        <input type="text" id="searchInput" placeholder="Buscar">
+    </div>
+</header>
+
+<div class="table-container">
+    <table id="doctorsTable">
+        <thead>
+            <tr>
+                <th>Detalles</th>
+                <th>Fecha</th>
+                <th>Pago</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for factura in facturas %}
+                <tr>
+                    <td>
+                        <div class="info">
+                            <span>{{ factura.cita.servicio }}</span>
+                        </div>
+                    </td>
+                    <td>{{ factura.fecha_emision }}</td>
+                    <td>{{ factura.monto }}</td>
+                    <td>
+                        {% if factura.estado == 'cancelada' %}
+                            <button class="button-green">Cancelado</button>
+                        {% else %}
+                            <button class="button-red">Pendiente</button>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}            
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const tableRows = document.querySelectorAll('#doctorsTable tbody tr');
+
+        searchInput.addEventListener('keyup', function() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+
+            tableRows.forEach(row => {
+                const doctorName = row.querySelector('.info span').textContent.toLowerCase();
+
+                if (doctorName.includes(searchTerm)) {
+                    row.style.display = ''; 
+                } else {
+                    row.style.display = 'none';  
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

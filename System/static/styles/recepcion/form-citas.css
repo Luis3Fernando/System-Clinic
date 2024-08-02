@@ -1,0 +1,57 @@
+.container-form {
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.container-form h1{
+    margin-bottom: 50px;
+}
+.form-group {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+}
+.form-group label {
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="date"],
+.form-group input[type="tel"],
+.form-group input[type="file"],
+.form-group select {
+    border: none;
+    border-bottom: 2px solid #ccc;
+    padding: 5px;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+.form-group input[type="file"] {
+    padding: 0;
+}
+
+input{
+    border: none;
+    outline: none;
+}
+
+button {
+    background-color: #089BAB;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    width: 200px;
+    border-radius: 10px;
+}
+.row {
+    display: flex;
+    justify-content: space-between;
+}
+.row .form-group {
+    width: 48%;
+}

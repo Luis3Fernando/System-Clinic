@@ -1,0 +1,95 @@
+{% extends 'generic-recepcion.html' %}
+
+{% block title %}Citas{% endblock %}
+{% block extra_css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/recepcion/form-citas.css' %}">
+{% endblock %}
+
+{% block cita_active %}active{% endblock %}
+
+{% block cita_icon %}
+<img src="{% static 'icon/cita-color.png' %}" alt="cita">
+{% endblock %}
+
+{% block content %}
+
+    <div class="container-form">
+        <h1>Crear Cita</h1>
+        <form method="POST" action="{% url 'agregar-cita' %}" class="cita-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="paciente">Paciente</label>
+                <select name="paciente" id="paciente" class="form-control">
+                    {% for paciente in pacientes %}
+                    <option value="{{ paciente.id }}">{{ paciente.nombre }} {{ paciente.apellidos }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="doctor">Doctor</label>
+                <select name="doctor" id="doctor" class="form-control">
+                    {% for doctor in doctores %}
+                    <option value="{{ doctor.id }}">{{ doctor.nombre }} {{ doctor.apellidos }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="servicio">Servicio</label>
+                <select name="servicio" id="servicio" class="form-control">
+                    {% for servicio in servicios %}
+                    <option value="{{ servicio.id }}">{{ servicio.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="fecha">Fecha</label>
+                        <input type="date" id="fecha" name="fecha" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="hora_inicio">Hora de inicio</label>
+                        <input type="time" id="hora_inicio" name="hora_inicio" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="hora_fin">Hora de fin</label>
+                        <input type="time" id="hora_fin" name="hora_fin" class="form-control" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="motivo">Motivo</label>
+                        <textarea id="motivo" name="motivo" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="estado">Estado</label>
+                <select name="estado" id="estado" class="form-control">
+                    <option value="programada" selected>Programada</option>
+                    <option value="completada">Completada</option>
+                    <option value="cancelada">Cancelada</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="notas">Notas</label>
+                <textarea id="notas" name="notas" class="form-control" rows="5"></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Crear Cita</button>
+        </form>
+    </div>
+{% endblock %}

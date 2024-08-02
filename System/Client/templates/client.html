@@ -1,0 +1,103 @@
+{% extends 'generic.html' %}
+
+{% block title %}Inicio{% endblock %}
+{% block extra_css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/cliente/main.css' %}">
+{% endblock %}
+
+{% block home_active %}active{% endblock %}
+
+{% block home_icon %}
+<img src="{% static 'icon/hogar-color.png' %}" alt="Home">
+{% endblock %}
+
+{% block content %}
+<div class="content-home">
+    <div class="left-home">
+        <div class="left-header">
+            <h2>¡Hola {{paciente.nombre}}!</h2>
+            <p>Bienvenido a Aless Dent</p>
+            <img src="{% static 'img/nurse-home.png'%}" alt="">
+        </div>
+        <div class="left-main">
+            <h3>Estadisticas</h3>
+            <div> 
+                <div id="atendido">
+                    <p>Completada</p>
+                    <h1>{{citas_completadas}}</h1>
+                </div>
+                <div id="pendiente">
+                    <p>Pendientes</p>
+                    <h1>{{citas_programadas}}</h1>
+                </div>
+                <div id="emergencia">
+                    <p>Cancelada</p>
+                    <h1>{{citas_canceladas}}</h1>
+                </div>
+            </div>
+        </div>
+        <div class="left-footer">
+            <button onclick="window.location.href='{% url 'historial' %}'">
+                <img src="{% static 'icon/history-color.png'%}" alt="">
+                <h2>Historial Medico</h2>
+            </button>
+
+            <button onclick="window.location.href='{% url 'facturas-client' %}'">
+                <img src="{% static 'icon/facture-color.png'%}" alt="">
+                <h2>Facturas</h2>
+            </button>
+        </div>
+    </div>
+    <div class="right-home">
+        <div class="right-header">
+            <div class="right-header-edit">
+                <h2>Mi perfil</h2>
+                <button onclick="window.location.href='{% url 'update-cliente' paciente.id %}'"><img src="{% static 'icon/lapiz.png' %}" alt=""></button>
+            </div>
+            <div class="right-header-profile">
+                <img src="{{paciente.foto_perfil.url}}" alt="">
+                <div>
+                    <h2>{{paciente.nombre}}</h2>
+                    <span>{{paciente.apellidos}}</span>
+                </div>
+            </div>
+            <div class="right-header-details">
+                <div>
+                    <h2>Direccion</h2>
+                    <span>{{paciente.direccion}}</span>
+                </div>  
+                <div>
+                    <h2>Celular</h2>
+                    <span>{{paciente.celular}}</span>
+                </div>
+                <div>
+                    <h2>Ocupacion</h2>
+                    <span>{{paciente.ocupacion}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="right-footer">
+            <h2>Proximas Citas</h2>
+            <div class="scroll-content-citas">
+                {%for cita in citas%}
+                <div>
+                    <div>
+                        <p>{{cita.fecha}}</p>
+                        <p>{{cita.hora_inicio}}</p>
+                    </div>
+                    <div>
+                        <span>
+                            {%if cita.doctor.genero == 'Masculino'%} Dr {%else%} Dra {%endif%} {{cita.doctor.apellidos}}
+                        </span>
+                        <span>
+                            {{cita.servicio}}
+                        </span>
+                    </div>
+                </div>
+                {%endfor%}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

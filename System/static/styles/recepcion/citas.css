@@ -1,0 +1,161 @@
+h1 {
+    margin-bottom: 20px;
+}
+
+.top-detail{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.top-detail h3{
+    color: #4e4e4e;
+}
+
+.top-detail button{
+    color: white;
+    background-color: #089BAB;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    padding: 5px 30px;
+    cursor: pointer;
+}
+
+.table-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 10px auto;
+    height: 80%;
+    overflow-y: auto;
+    margin-top: 40px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+thead th {
+    color: #B5B7C0;
+    text-align: left;
+    font-weight: lighter;
+    padding: 10px 15px;
+    border-bottom: 1px solid #B5B7C0;
+}
+
+.hora{
+    color: #B5B7C0;
+    font-size: 12px;
+}
+
+tbody tr {
+    border-bottom: 1px solid #B5B7C0;
+}
+
+tbody tr:last-child {
+    border-bottom: none;
+}
+
+tbody td {
+    padding: 25px 15px;
+}
+.current-day {
+    color: #089BAB;
+    font-size: 20px;
+}
+
+.card{
+    background-color: #E6FEFF;
+    width: 120px;
+    padding: 5px;
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+    cursor: pointer;
+    border-left: solid 3px #24B0C9;
+}
+
+.card p{
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #24B0C9;
+}
+
+#success p{
+    color: #24B0C9;
+}
+
+#success {
+    background-color: #E6FEFF;
+    border-left: solid 3px #24B0C9;
+    color: #24B0C9;
+}
+
+#pendent p{
+    color: #F8BF1C;
+}
+
+#pendent {
+    background-color: #FCFDD8;
+    border-left: solid 3px #F8BF1C;
+    color: #F8BF1C;
+}
+
+#cancel p{
+    color: #DF0404;
+}
+
+#cancel {
+    background-color: #FFC5C5;
+    border-left: solid 3px #DF0404;
+    color: #DF0404;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+.overlay-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    height: 300px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+select, button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+button{
+    border: none;
+    outline: none;
+    background-color: #089BAB;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+}
+

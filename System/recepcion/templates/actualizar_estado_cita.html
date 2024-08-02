@@ -1,0 +1,35 @@
+<div class="modal" id="citaModal">
+  <div class="modal-content">
+    <span class="close" id="closeModal">&times;</span>
+    <h2>Actualizar Estado de la Cita</h2>
+    <form method="POST" action="{% url 'actualizar_estado_cita' cita.id %}">
+      {% csrf_token %} {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">Guardar</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  // JavaScript para manejar el modal
+  document.querySelectorAll(".card").forEach((card) => {
+    card.onclick = function () {
+      const citaId = this.getAttribute("data-cita-id");
+      fetch(`/recepcion/actualizar_estado_cita/${citaId}/`)
+        .then((response) => response.text())
+        .then((html) => {
+          document.querySelector(".modal-content").innerHTML = html;
+          document.getElementById("citaModal").style.display = "block";
+        });
+    };
+  });
+
+  document.getElementById("closeModal").onclick = function () {
+    document.getElementById("citaModal").style.display = "none";
+  };
+
+  window.onclick = function (event) {
+    if (event.target == document.getElementById("citaModal")) {
+      document.getElementById("citaModal").style.display = "none";
+    }
+  };
+</script>

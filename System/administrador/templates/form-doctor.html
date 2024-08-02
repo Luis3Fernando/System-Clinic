@@ -1,0 +1,81 @@
+{% extends 'generic_admin.html' %}
+
+{% block title %}Doctores{% endblock %}
+{% block extra_css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/administrador/form-doctor.css' %}">
+{% endblock %}
+
+{% block doctor_active %}active{% endblock %}
+
+{% block doctor_icon %}
+    <img src="{% static 'icon/doctor-color.png' %}" alt="doctor">
+{% endblock %}
+
+{% block content %}
+<div class="container-form">
+    <h1>Agregar Doctor</h1>
+    <form action="{% url 'agregar-doctor' %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="form-group">
+                <label for="dni">DNI</label>
+                <input type="text" id="dni" name="dni" required>
+            </div>
+            <div class="form-group">
+                <label for="foto-perfil">Foto de Perfil (JPG)</label>
+                <input type="file" id="foto-perfil" name="foto-perfil" accept=".jpg" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" required>
+            </div>
+            <div class="form-group">
+                <label for="apellido">Apellido</label>
+                <input type="text" id="apellido" name="apellido" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <label for="genero">Género</label>
+                <select id="genero" name="genero" required>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Femenino">Femenino</option>
+                    <option value="Otro">Otro</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <label for="celular">Celular</label>
+                <input type="tel" id="celular" name="celular" required>
+            </div>
+            <div class="form-group">
+                <label for="correo">Correo</label>
+                <input type="email" id="correo" name="correo" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <label for="direccion">Dirección</label>
+                <input type="text" id="direccion" name="direccion" required>
+            </div>
+            <div class="form-group">
+                <label for="especialidad">Especialidad</label>
+                <input type="text" id="especialidad" name="especialidad" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <label for="curriculum">Currículum (PDF)</label>
+                <input type="file" id="curriculum" name="curriculum" accept=".pdf" required>
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Agregar Doctor">
+        </div>
+    </form>
+</div>
+{% endblock %}

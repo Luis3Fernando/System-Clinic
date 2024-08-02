@@ -1,0 +1,125 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Basic styles for the body */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    overflow: hidden;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.site-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 100px;
+    color: black;
+    padding: 20px 30px;
+}
+
+.site-header .logo a {
+    color: black;
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.complements{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.nav ul {
+    list-style: none;
+    display: flex;
+    gap: 15px;
+}
+
+.nav ul li a {
+    color: black;
+    text-decoration: none;
+    font-size: 16px;
+    transition: color 0.3s;
+}
+
+.complements button{
+    margin-left: 30px;
+    width: 150px;
+    padding: 7px;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    background-color: #089BAB;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.site-header .nav ul li a:hover {
+    color: #089BAB;
+}
+
+/* Main content styles */
+.site-main {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+.left{
+    width: 50%;
+}
+
+.left>img{
+    height: 650px;
+    position: absolute;
+    bottom: 0;
+    left: 30px;
+}
+
+.left> .circle-b{
+    height: 800px;
+    width: 800px;
+    border-radius: 400px;
+    background-color: #84CDD5;
+    position: absolute;
+    left: -200px;
+    bottom: -200px;
+}
+
+.left> .circle-s{
+    height: 400px;
+    width: 400px;
+    border-radius: 200px;
+    background-color: #C2E6EA;
+    position: absolute;
+    left: -100px;
+    bottom: -100px;
+}
+
+.right{
+    width: 50%;
+}
+
+.right h1{
+    font-size: 60px;
+    margin-top: 100px;
+}
+
+.right h2{
+    font-size: 50px;
+    color: #089BAB;
+}
+

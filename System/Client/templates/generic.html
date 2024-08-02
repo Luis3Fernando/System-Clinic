@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static  %}
+    <title>{% block title %}Generic{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'styles/base.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="container-main">
+        <aside class="nav-container">
+            <h1>Aless Dent</h1>
+            <nav>
+                <ul>
+                    <li class="{% block home_active %}{% endblock %}"><a href="{% url 'client' %}">
+                        {% block home_icon %}
+                        <img src="{% static 'icon/hogar-selected.png' %}" alt="Home">
+                        {% endblock %}
+                        Home
+                    </a></li>
+
+                    <li class="{% block facture_active %}{% endblock %}"><a href="{% url 'client' %}facturas-client/"> 
+                        {% block facture_icon %}
+                        <img src="{% static 'icon/facture-selected.png' %}" alt="Facturas">
+                        {% endblock %}
+                        Facturas
+                    </a></li>
+
+                    <li class="{% block cita_active %}{% endblock %}"><a href="{% url 'client' %}citas/">
+                        {% block cita_icon %}
+                        <img src="{% static 'icon/cita-selected.png' %}" alt="Citas">
+                        {% endblock %}
+                        Citas
+                    </a></li>
+
+                    <li class="{% block history_active %}{% endblock %}"><a href="{% url 'client' %}historial/">
+                        {% block history_icon %}
+                        <img src="{% static 'icon/history-selected.png' %}" alt="Historial Medico">
+                        {% endblock %}
+                        Historial Médico
+                    </a></li>
+                    <li class="{% block user_active %}{% endblock %}"><a href="{% url 'client' %}perfil/"> 
+                        {% block profile_icon %}
+                        <img src="{% static 'icon/user-selected.png' %}" alt="Perfil">
+                        {% endblock %}
+                        Perfil
+                    </a></li>
+                </ul>
+            </nav>
+            <div>
+                <a href="{% url 'home' %}"> <img src="{% static 'icon/back-selected.png' %}" alt="">Cerrar sesión</a>
+            </div>
+        </aside>
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+    </div>
+    {% block extra_js %}
+    
+    {% endblock %}
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static  %}
+    <title>{% block title %}Generic{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'styles/base.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="container-main">
+        <aside class="nav-container">
+            <h1>Aless Dent</h1>
+            <nav>
+                <ul>
+                    <li class="{% block home_active %}{% endblock %}"><a href="{% url 'doctor' %}">
+                        {% block home_icon %}
+                        <img src="{% static 'icon/hogar-selected.png' %}" alt="Home">
+                        {% endblock %}
+                        Home
+                    </a></li>
+
+                    <li class="{% block paciente_active %}{% endblock %}"><a href="{% url 'doctor' %}pacientes/"> 
+                        {% block paciente_icon %}
+                        <img src="{% static 'icon/client-selected.png' %}" alt="Pacientes">
+                        {% endblock %}
+                        Pacientes
+                    </a></li>
+
+                    <li class="{% block cita_active %}{% endblock %}"><a href="{% url 'doctor' %}citasd/">
+                        {% block cita_icon %}
+                        <img src="{% static 'icon/cita-selected.png' %}" alt="Citas">
+                        {% endblock %}
+                        Citas
+                    </a></li>
+
+                    <li class="{% block report_active %}{% endblock %}"><a href="{% url 'doctor' %}reportes/">
+                        {% block report_icon %}
+                        <img src="{% static 'icon/report-selected.png' %}" alt="Reporte">
+                        {% endblock %}
+                        Reportes
+                    </a></li>
+                </ul>
+            </nav>
+            <div>
+                <a href="{% url 'home' %}"> <img src="{% static 'icon/back-selected.png' %}" alt="">Cerrar sesión</a>
+            </div>
+        </aside>
+        <main>
+            {% block content %}
+            {% endblock %}
+        </main>
+    </div>
+    {% block extra_js %}
+    
+    {% endblock %}
+</body>
+</html>

@@ -1,0 +1,82 @@
+{% extends 'generic_admin.html' %}
+
+{% block title %}Doctores{% endblock %}
+{% block extra_css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/administrador/form-doctor.css' %}">
+{% endblock %}
+
+{% block doctor_active %}active{% endblock %}
+
+{% block doctor_icon %}
+    <img src="{% static 'icon/doctor-color.png' %}" alt="doctor">
+{% endblock %}
+
+{% block content %}
+<div class="container-form">
+    <h1>Modificar Doctor</h1>
+    <form action="{% url 'actualizar-doctor' doctor.id %}" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            <div class="form-group">
+                <label for="dni">DNI</label>
+                <input type="text" id="dni" name="dni" value="{{ doctor.dni }}" required>
+            </div>
+            <div class="form-group">
+                <label for="foto-perfil">Foto de Perfil (JPG)</label>
+                <input type="file" id="foto-perfil" name="foto-perfil" accept=".jpg">
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" value="{{ doctor.nombre }}" required>
+            </div>
+            <div class="form-group">
+                <label for="apellido">Apellido</label>
+                <input type="text" id="apellido" name="apellido" value="{{ doctor.apellidos }}" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <label for="genero">Género</label>
+                <select id="genero" name="genero" required>
+                    <option value="Masculino" {% if doctor.genero == "Masculino" %}selected{% endif %}>Masculino</option>
+                    <option value="Femenino" {% if doctor.genero == "Femenino" %}selected{% endif %}>Femenino</option>
+                    <option value="Otro" {% if doctor.genero == "Otro" %}selected{% endif %}>Otro</option>
+                </select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <label for="celular">Celular</label>
+                <input type="tel" id="celular" name="celular" value="{{ doctor.celular }}" required>
+            </div>
+            <div class="form-group">
+                <label for="correo">Correo</label>
+                <input type="email" id="correo" name="correo" value="{{ doctor.email }}" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <label for="direccion">Dirección</label>
+                <input type="text" id="direccion" name="direccion" value="{{ doctor.direccion }}" required>
+            </div>
+            <div class="form-group">
+                <label for="especialidad">Especialidad</label>
+                <input type="text" id="especialidad" name="especialidad" value="{{ doctor.especialidad }}" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group">
+                <label for="curriculum">Currículum (PDF)</label>
+                <input type="file" id="curriculum" name="curriculum" accept=".pdf">
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Actualizar Doctor">
+        </div>
+    </form>
+</div>
+
+{% endblock %}

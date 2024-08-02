@@ -1,0 +1,134 @@
+    {% extends 'generic-recepcion.html' %}
+
+    {% block title %}Citas{% endblock %}
+    {% block extra_css %}
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'styles/recepcion/citas.css' %}">
+    {% endblock %}
+
+    {% block cita_active %}active{% endblock %}
+
+    {% block cita_icon %}
+    <img src="{% static 'icon/cita-color.png' %}" alt="cita">
+    {% endblock %}
+
+    {% block content %}
+    <h1>Horario de Citas</h1>
+    <div class="top-detail">
+        <h3>{{ today }}</h3>
+        <div><button onclick="window.location.href='{% url 'agregar-cita' %}'">Agregar</button></div>
+    </div>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Horas</th>
+                    {% for day in days_of_week %}
+                        <th {% if day.name == day_current %}class="current-day"{% endif %}>
+                            {{ day.number }} <br> {{ day.name }}
+                        </th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in schedule_table %}
+                <tr>
+                    <td><span class="hora">{{ row.hour }}</span></td>
+                    {% for slot in row.slots %}    
+                        {% if slot %}
+                            <td>
+                                {% if slot.0.estado == "completada" %}
+                                <div class="card" data-cita-id="{{ slot.0.id }}" id="succes">
+                                    <p>{{ slot.0.servicio }}</p>
+                                    <p>{{ slot.0.hora_inicio }}</p>
+                                </div>
+                                 {% elif slot.0.estado == "programada" %}
+                                 <div class="card" data-cita-id="{{ slot.0.id }}" id="pendent">
+                                    <p>{{ slot.0.servicio }}</p>
+                                    <p>{{ slot.0.hora_inicio }}</p>
+                                </div>
+                                 {% else %}
+                                 <div class="card" data-cita-id="{{ slot.0.id }}" id="cancel">
+                                    <p>{{ slot.0.servicio }}</p>
+                                    <p>{{ slot.0.hora_inicio }}</p>
+                                </div>
+                                 {% endif %}
+                            </td>
+                        {% else %}
+                            <td>-</td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="overlay" id="overlay">
+        <div class="overlay-content">
+            <span class="close-btn" id="closeOverlay">&times;</span>
+            <h2>Detalles de la Cita</h2>
+            <p id="citaId">ID de la Cita: </p>
+    
+            <form id="estadoForm">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="estado">Estado de la Cita:</label>
+                    <select name="estado" id="estado">
+                        <option value="programada">Programada</option>
+                        <option value="completada">Completada</option>
+                        <option value="cancelada">Cancelada</option>
+                    </select>
+                </div>
+                <button type="submit" id="guardarBtn">Guardar</button>
+            </form>
+        </div>
+    </div>
+    {% endblock %}
+
+
+    {% block extra_js %}
+    <script>
+        document.querySelectorAll('.card').forEach(card => {
+            card.onclick = function() {
+                const citaId = this.getAttribute('data-cita-id');
+                document.getElementById('citaId').textContent = `ID de la Cita: ${citaId}`;
+                document.getElementById('overlay').style.display = "flex";
+                document.getElementById('estadoForm').setAttribute('data-cita-id', citaId);
+            }
+        });
+    
+        document.getElementById('closeOverlay').onclick = function() {
+            document.getElementById('overlay').style.display = "none";
+        }
+    
+        window.onclick = function(event) {
+            if (event.target == document.getElementById('overlay')) {
+                document.getElementById('overlay').style.display = "none";
+            }
+        }
+    
+        document.getElementById('estadoForm').onsubmit = function(event) {
+            event.preventDefault(); // Evita el envío del formulario estándar
+            const citaId = this.getAttribute('data-cita-id');
+            const estado = document.getElementById('estado').value;
+            
+            fetch(`/recepcion/actualizar_estado_cita/${citaId}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ estado })
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('overlay').style.display = "none";
+                    location.reload(); // Recarga la página para reflejar el cambio
+                } else {
+                    console.error('Error al actualizar el estado de la cita.');
+                }
+            });
+        }
+    </script>
+    {% endblock %}

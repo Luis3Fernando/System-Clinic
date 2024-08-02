@@ -1,0 +1,56 @@
+{% extends 'generic-recepcion.html' %}
+
+{% block title %}Factura{% endblock %}
+{% block extra_css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/recepcion/form-factura.css' %}">
+{% endblock %}
+
+{% block facture_active %}active{% endblock %}
+
+{% block facture_icon %}
+<img src="{% static 'icon/facture-color.png' %}" alt="factura">
+{% endblock %}
+
+{% block content %}
+<div>
+    <h1>
+        Crear Factura
+    </h1>
+    <form method="POST" action="{% url 'agregar-factura' %}" class="factura-form">
+        {% csrf_token %}
+        
+        <div class="row">
+            <div class="col-md-6">                
+                <div class="form-group">
+                    <label for="monto">Monto</label>
+                    <input type="number" step="0.01" id="monto" name="monto" class="form-control" required>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="cita">Cita</label>
+                    <select name="cita" id="cita" class="form-control" required>
+                        {% for cita in citas %}
+                        <option value="{{ cita.id }}">Paciente: {{ cita.paciente.nombre }} - {{ cita.fecha }} - {{cita.hora_inicio}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="estado">Estado</label>
+                    <select name="estado" id="estado" class="form-control" required>
+                        <option value="cancelada">Cancelada</option>
+                        <option value="en_deuda">En Deuda</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Crear Factura</button>
+    </form>
+    
+</div>
+
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'generic.html' %}
+
+{% block title %}Perfil{% endblock %}
+{% block extra_css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/cliente/perfil.css' %}">
+{% endblock %}
+
+{% block user_active %}active{% endblock %}
+
+{% block profile_icon %}
+<img src="{% static 'icon/user-color.png' %}" alt="perfil">
+{% endblock %}
+
+{% block content %}
+<div class="home-perfil">  
+    <div class="content-main">
+        <div class="left">
+            <div class="left-header">
+                <img src="{{paciente.foto_perfil.url}}" alt="{{paciente.nombre}}">
+                <h2>{{paciente.nombre}}</h2>
+                <ul>
+                    <li>Apellidos: <strong>{{paciente.apellidos}}</strong> </li>
+                    <li>Genero: <strong>{{paciente.genero}}</strong> </li>
+                </ul>
+                <button onclick="window.location.href='{% url 'update-cliente' paciente.id %}'">Actualizar</button>
+            </div>
+        </div>
+    
+        <div class="right">
+            <ul>
+                <li>DNI: <strong>{{paciente.dni}}</strong> </li>
+                <li>Ocupación: <strong>{{paciente.ocupacion}}</strong> </li>
+                <li>Direccion: <strong>{{paciente.direccion}}</strong> </li>
+                <li>Telefono: <strong>{{paciente.celular}}</strong> </li>
+                <li>Correo: <strong>{{paciente.email}}</strong> </li>
+                <li>Fecha de registro: <strong>{{paciente.fecha_registro}}</strong> </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

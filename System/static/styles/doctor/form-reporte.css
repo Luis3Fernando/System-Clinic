@@ -1,0 +1,54 @@
+.reporte-form {
+    width: 100%;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #dddddd;
+    border-radius: 10px;
+    overflow-y: auto;
+    height: 90%;
+}
+.titulo{
+    margin-bottom: 20px;
+}
+
+.reporte-form .form-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.reporte-form .form-group {
+    flex: 1;
+    margin-bottom: 20px;
+}
+
+.reporte-form label {
+    font-weight: bold;
+}
+
+.reporte-form select,
+.reporte-form input[type="text"],
+.reporte-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-bottom: 1px solid #dddddd;
+    border-radius: 0;
+    box-sizing: border-box;
+    font-size: 16px;
+    outline: none;
+}
+
+.reporte-form textarea {
+    resize: vertical;
+    height: 120px;
+}
+
+button {
+    background-color: #089BAB;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    width: 200px;
+    border-radius: 10px;
+}

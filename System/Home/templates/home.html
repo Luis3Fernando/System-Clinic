@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/home.css' %}">
+    <title>Document</title>
+</head>
+<body>
+    <header class="site-header">
+        <div class="logo">
+            <a href="#">Aless Dent</a>
+        </div>
+       
+        <div class="complements">
+            <nav class="nav">
+                <ul>
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#">Servicios</a></li>
+                    <li><a href="#">Novedades</a></li>
+                </ul>
+            </nav>
+            <button onclick="window.location.href='{% url 'login' %}'" >Iniciar Sesión</button>
+        </div>
+    </header>
+    <main class="site-main">
+        <div class="left">
+            <div class="circle-b"></div>
+            <div class="circle-s"></div>
+            <img src="{% static 'img/cover-nurse.png'%}" alt="">
+        </div>
+        <div class="right">
+            <h1>Sonrisas saludables</h1>
+            <h2>vidas felices</h2>
+        </div>
+    </main>
+</body>
+</html>

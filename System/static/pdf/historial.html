@@ -1,0 +1,40 @@
+<meta charset="UTF-8">
+<p><img style="float: left;" src="https://www.zarla.com/images/zarla-odonto-tech-1x1-2400x2400-20210604-84rbr3cmrqj7rcrvdrp9.png?crop=1:1,smart&amp;width=250&amp;dpr=2" alt="Logos para dentista general + creador de logos gratis" width="79" height="79" /></p>
+<h4 style="text-align: center;"><span class="a" data-initial-color="">Cl&iacute;nica Odontol&oacute;gica Ales Dent</span></h4>
+<h4 style="text-align: center;"><span class="a" data-initial-color=""><span class="l7">Av. Arequipa N&deg; 123 - Abancay</span></span></h4>
+<h4 style="text-align: center;">Telefono: 123 456 7890</h4>
+<hr />
+<h2 style="text-align: center;">Historial m&eacute;dico</h2>
+<h4>&nbsp; &nbsp; &nbsp;Informaci&oacute;n B&aacute;sica del Paciente</h4>
+<p><strong>&nbsp; &nbsp; &nbsp; Nombre:</strong> {{paciente.nombre}} {{paciente.apellidos}}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <strong>DNI:</strong> {{paciente.dni}}</p>
+<p><strong>&nbsp; &nbsp; &nbsp; Fecha de Nacimiento:</strong> {{paciente.fecha_registro}}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <strong>Email:</strong> {{paciente.email}}</p>
+<p><strong>&nbsp; &nbsp; &nbsp; Email:</strong> {{paciente}}&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; <strong>celular:</strong> {{paciente.celular}}</p>
+<p>&nbsp; &nbsp; &nbsp; <strong>Direcci&oacute;n:</strong> <span class="a" data-initial-color="">{{paciente.direccion}}</span></p>
+<p><strong><span class="a" data-initial-color="">&nbsp; &nbsp; &nbsp;Cita mas reciente</span></strong></p>
+<p><strong><span class="a" data-initial-color="">&nbsp; &nbsp; &nbsp;Fecha:&nbsp;</span></strong><span class="a" data-initial-color="">{{cita.fecha}}</span></p>
+<p><span class="a" data-initial-color="">&nbsp; &nbsp; &nbsp;<strong>Tratamiento:&nbsp;</strong>{{cita.servicio}}&nbsp;</span></p>
+<p><span class="a" data-initial-color="">&nbsp; &nbsp; &nbsp;<strong>Doctor asignado:&nbsp;</strong>{{cita.doctor}}</span></p>
+<h4>&nbsp; &nbsp; &nbsp;Historial de citas</h4>
+<table style="border-collapse: collapse; width: 100.91%; height: 96px;" border="1">
+<tbody>
+<tr>
+<td style="width: 33.3333%; text-align: center;"><strong>Fecha</strong></td>
+<td style="width: 33.3333%; text-align: center;"><strong>Doctor</strong></td>
+<td style="width: 36.0448%; text-align: center;"><strong>Tipo de cita</strong></td>
+</tr>
+<tr>
+<td style="width: 33.3333%; text-align: left;">&nbsp;{{cita.fecha}}</td>
+<td style="width: 33.3333%; text-align: center;">&nbsp;{{cita.doctor.nombre}} {{cita.doctor.apellidos}}</td>
+<td style="width: 36.0448%; text-align: center;">&nbsp;{{cita.servicio}}</td>
+</tr>
+</tbody>
+</table>
+<p>&nbsp; &nbsp;&nbsp;</p>
+<p><strong>Fecha de cita:&nbsp;</strong>{{cita.fecha}}</p>
+<p><strong>Tratamiento:&nbsp;</strong>{{reporte.problemas}}</p>
+<p><strong>Diagn&oacute;stico:</strong></p>
+<p>{{reporte.informacion}}</p>
+<p><strong>Recomendaciones:</strong></p>
+<p>{{reporte.recomendaciones}}</p>
+<p><strong>&nbsp; &nbsp; </strong></p>
+<p><span style="color: #999999;">&copy; 2024 Ales Dent. Todos los derechos reservados.</span></p>

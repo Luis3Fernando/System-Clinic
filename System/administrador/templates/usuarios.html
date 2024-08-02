@@ -1,0 +1,85 @@
+{% extends 'generic_admin.html' %}
+
+{% block title %}Usuarios{% endblock %}
+{% block extra_css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/administrador/usuarios.css' %}">
+{% endblock %}
+
+{% block user_active %}active{% endblock %}
+
+{% block profile_icon %}
+<img src="{% static 'icon/client-color.png' %}" alt="usuario">
+{% endblock %}
+
+{% block content %}
+<header>
+    <h1>Lista de Clientes</h1>
+    <div>
+        <img src="{% static 'icon/busqueda.png'%}" alt="busqueda">
+        <input type="text" id="searchInput" placeholder="Buscar">
+    </div>
+    <button onclick="window.location.href='{% url 'agregar-cliente-admin' %}'" >Agregar</button>
+</header>
+
+<div class="table-container">
+    <table id="doctorsTable">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Ocupacion</th>
+                <th>Teléfono</th>
+                <th>Correo</th>
+                <th>Citas</th>
+                <th>Facturas</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for client in clients %}
+                <tr>
+                    <td>
+                        <div class="doctor-info">
+                            <a href="{% url 'cliente-admin' client.id %}"><img class="img-perfil" src="{{ client.foto_perfil.url }}" alt="{{ client.nombre }}"></a>
+                            <span>{{ client.nombre }} {{client.apellidos}}</span>
+                        </div>
+                    </td>
+                    <td>{{ client.ocupacion }}</td>
+                    <td>{{ client.celular }}</td>
+                    <td>{{ client.email }}</td>
+                    <td>{{ client.total_citas }}</td>
+                    <td>
+                        {% if client.esta_activo %}
+                            <button class="button-green">Correcto</button>
+                        {% else %}
+                            <button class="button-red">Deuda</button>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}            
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const tableRows = document.querySelectorAll('#doctorsTable tbody tr');
+
+        searchInput.addEventListener('keyup', function() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+
+            tableRows.forEach(row => {
+                const doctorName = row.querySelector('.info span').textContent.toLowerCase();
+
+                if (doctorName.includes(searchTerm)) {
+                    row.style.display = ''; 
+                } else {
+                    row.style.display = 'none';  
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

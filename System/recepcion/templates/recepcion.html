@@ -1,0 +1,114 @@
+{% extends 'generic-recepcion.html' %}
+
+{% block title %}Recepcion{% endblock %}
+{% block extra_css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/recepcion/recepcion.css' %}">
+{% endblock %}
+
+{% block home_active %}active{% endblock %}
+
+{% block home_icon %}
+<img src="{% static 'icon/hogar-color.png' %}" alt="Home">
+{% endblock %}
+
+{% block content %}
+<div class="content-home">
+    <div class="left-home">
+        <div class="left-header">
+            <h2>¡Hola!</h2>
+            <p>Que tenga un exelente dia en Aless Dent</p>
+            <img src="{% static 'img/nurse-home.png'%}" alt="">
+        </div>
+
+        <div class="left-main">
+            <h3>Pacientes</h3>
+            <div>
+                <div id="card">
+                    <p>Atendidos</p>
+                    <h1>1</h1>
+                </div>
+                <div id="card">
+                    <p>Pendientes</p>
+                    <h1>2</h1>
+                </div>  
+            </div>
+        </div>
+
+        <div class="left-main">
+            <h3>Citas</h3>
+            <div>
+                <div id="atendido">
+                    <p>Completadas</p>
+                    <h1>{{citas_completadas}}</h1>
+                </div>
+                <div id="pendiente">
+                    <p>Pendientes</p>
+                    <h1>{{citas_programadas}}</h1>
+                </div>  
+                <div id="emergencia">
+                    <p>Canceladas</p>
+                    <h1>{{citas_canceladas}}</h1>
+                </div> 
+            </div>  
+        </div>
+        
+        <div class="left-footer">
+            <button  onclick="window.location.href='{% url 'agregar-cita' %}'">
+                <img src="{% static 'icon/cita-selected.png'%}" alt="">
+                <h2>Programar Cita</h2>
+            </button>
+
+            <button  onclick="window.location.href='{% url 'agregar-factura' %}'">
+                <img src="{% static 'icon/facture-selected.png'%}" alt="">
+                <h2>Generar Factura</h2>
+            </button>
+        </div>
+    </div>
+    <div class="right-home">
+        <div class="right-header">
+            <img src="{% static 'icon/busqueda.png' %}" alt="">
+            <input type="text" id="buscar" placeholder="Buscar" onkeyup="filtrarCitas()">
+        </div>
+        <div class="right-footer">
+            <h2>Citas para hoy</h2>
+            <div class="scroll-content-citas" id="citas-container">
+                {% for cita in citas %}
+                <div class="cita">
+                    <h3 class="cita-name">{{ cita.servicio }}</h3>
+                    <p class="cita-doctor">Paciente: {{ cita.paciente.nombre }} {{ cita.paciente.apellidos }}</p>
+                    <p class="cita-paciente">Hora: {{cita.hora_inicio}}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function filtrarCitas() {
+        const input = document.getElementById('buscar');
+        const filter = input.value.toLowerCase();
+        const citasContainer = document.getElementById('citas-container');
+        const citas = citasContainer.getElementsByClassName('cita');
+
+        for (let i = 0; i < citas.length; i++) {
+            const citaName = citas[i].getElementsByClassName('cita-name')[0];
+            const citaDoctor = citas[i].getElementsByClassName('cita-doctor')[0];
+            const citaPaciente = citas[i].getElementsByClassName('cita-paciente')[0];
+
+            const nameValue = citaName.textContent.toLowerCase();
+            const doctorValue = citaDoctor.textContent.toLowerCase();
+            const pacienteValue = citaPaciente.textContent.toLowerCase();
+
+            if (nameValue.includes(filter) || doctorValue.includes(filter) || pacienteValue.includes(filter)) {
+                citas[i].style.display = "";
+            } else {
+                citas[i].style.display = "none";
+            }
+        }
+    }
+</script>
+{% endblock %}

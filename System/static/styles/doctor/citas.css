@@ -1,0 +1,81 @@
+h1 {
+    margin-bottom: 20px;
+}
+
+.top-detail{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.top-detail h3{
+    color: #4e4e4e;
+}
+
+.top-detail button{
+    color: white;
+    background-color: #089BAB;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    padding: 5px 30px;
+    cursor: pointer;
+}
+
+.table-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 10px auto;
+    height: 80%;
+    overflow-y: auto;
+    margin-top: 40px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+thead th {
+    color: #B5B7C0;
+    text-align: left;
+    font-weight: lighter;
+    padding: 10px 15px;
+    border-bottom: 1px solid #B5B7C0;
+}
+
+.hora{
+    color: #B5B7C0;
+    font-size: 12px;
+}
+
+tbody tr {
+    border-bottom: 1px solid #B5B7C0;
+}
+
+tbody tr:last-child {
+    border-bottom: none;
+}
+
+tbody td {
+    padding: 25px 0px;
+}
+.current-day {
+    color: #089BAB;
+    font-size: 20px;
+}
+
+.card{
+    background-color: #E6FEFF;
+    width: 100px;
+    padding: 5px;
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+    border-left: solid 3px #24B0C9;
+}
+
+.card p{
+    color: #24B0C9;
+    font-weight: 600;
+    margin-bottom: 10px;
+}

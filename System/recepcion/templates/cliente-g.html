@@ -1,0 +1,48 @@
+{% extends 'generic-recepcion.html' %}
+
+{% block title %}Clientes{% endblock %}
+{% block extra_css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/administrador/admin-cliente.css' %}">
+{% endblock %}
+
+{% block cliente_active %}active{% endblock %}
+
+{% block cliente_icon %}
+<img src="{% static 'icon/client-color.png' %}" alt="cliente">
+{% endblock %}
+
+{% block content %}
+<div class="home-perfil">
+    <div class="header-buttons">
+        <button id="modificar" onclick="window.location.href='{% url 'editar-cliente' client.id %}'">Modificar</button>
+    </div>
+    
+    <div class="content-main">
+        <div class="left">
+            <div class="left-header">
+                <img src="{{client.foto_perfil.url}}" alt="">
+                <h2>{{client.nombre}} {{client.apellidos}}</h2>
+            </div>
+            <div class="left-nav">
+                <ul>
+                    <li id="selected"><img src="{% static "icon/informacion-selected.png" %}" alt=""><a href="">Datos</a></li>
+                    <li><img src="{% static "icon/history-disabled.png" %}" alt=""><a href="">Historial</a></li>
+                </ul>
+            </div>
+        </div>
+    
+        <div class="right">
+            <ul>
+                <li>DNI: <strong>{{client.dni}}</strong> </li>
+                <li>Nombre de usuario: <strong>{{client.username}}</strong> </li>
+                <li>Contraseña: <strong>{{client.password}}</strong> </li>
+                <li>Direccion: <strong>{{client.direccion}}</strong> </li>
+                <li>Telefono: <strong>{{client.celular}}</strong> </li>
+                <li>Correo: <strong>{{client.email}}</strong> </li>
+                <li>Genero: <strong>{{client.genero}}</strong> </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

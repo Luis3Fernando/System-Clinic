@@ -1,0 +1,65 @@
+.factura-form {
+    width: 100%;
+    margin: auto;
+    padding: 20px;
+    background-color: #ffffff; 
+    border: 1px solid #dddddd; 
+    border-radius: 10px;
+}
+
+div>h1{
+    margin-bottom: 30px;
+}
+
+.factura-form .form-group {
+    margin-bottom: 20px;
+}
+
+.factura-form label {
+    font-weight: bold;
+}
+
+.factura-form select,
+.factura-form input[type="text"],
+.factura-form input[type="number"],
+.factura-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: none; 
+    border-bottom: 1px solid #dddddd;
+    border-radius: 0; 
+    box-sizing: border-box;
+    font-size: 16px;
+    outline: none;
+}
+
+.factura-form textarea {
+    resize: vertical;
+    height: 120px; 
+}
+
+.factura-form button {
+    background-color: #089BAB;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+.factura-form .row {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.factura-form .col-md-6 {
+    width: calc(50% - 10px); 
+    margin-bottom: 10px;
+}
+
+@media (max-width: 768px) {
+    .factura-form .col-md-6 {
+        width: 100%; 
+    }
+}

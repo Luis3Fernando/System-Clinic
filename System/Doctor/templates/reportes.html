@@ -1,0 +1,74 @@
+{% extends 'generic_doctor.html' %}
+
+{% block title %}Pacientes{% endblock %}
+{% block extra_css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/recepcion/facturas.css' %}">
+{% endblock %}
+
+{% block report_active %}active{% endblock %}
+
+{% block report_icon %}
+<img src="{% static 'icon/report-color.png' %}" alt="reporte">
+{% endblock %}
+
+{% block content %}
+<header>
+    <h1>Historial de Reportes</h1>
+    <div>
+        <img src="{% static 'icon/busqueda.png'%}" alt="busqueda">
+        <input type="text" id="searchInput" placeholder="Buscar">
+    </div>
+    <button onclick="window.location.href='{% url 'agregar-reporte' %}'">Agregar</button>
+</header>
+
+<div class="table-container">
+    <table id="doctorsTable">
+        <thead>
+            <tr>
+                <th>Detalles</th>
+                <th>Fecha</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for reporte in reportes %}
+                <tr>
+                    <td>
+                        <div class="info">
+                            <span>{{ reporte.cita.paciente.nombre }} {{ reporte.cita.paciente.apellidos }} - {{ reporte.cita.servicio}}</span>
+                        </div>
+                    </td>
+                    <td>{{ reporte.cita.fecha }}</td>
+                    <td>
+                        <a href="{% url 'generate_reporte_pdf' reporte.id %}" target="_blank"><button class="button-green">Generar Reporte</button></a>
+                    </td>
+                </tr>
+            {% endfor %}            
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const tableRows = document.querySelectorAll('#doctorsTable tbody tr');
+
+        searchInput.addEventListener('keyup', function() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+
+            tableRows.forEach(row => {
+                const doctorName = row.querySelector('.info span').textContent.toLowerCase();
+
+                if (doctorName.includes(searchTerm)) {
+                    row.style.display = ''; 
+                } else {
+                    row.style.display = 'none';  
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

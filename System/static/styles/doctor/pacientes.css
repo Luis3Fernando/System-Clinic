@@ -1,0 +1,130 @@
+header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header h1{
+    font-size: 20px;
+}
+
+header div img{
+    width: 25px;
+    height: 25px;
+}
+
+header div{
+    background-color: #F9FBFF;
+    padding: 5px 30px;
+    display: flex;
+    flex-direction: row;
+    border-radius: 10px;
+    align-items: center;
+}
+
+header div input{
+    border: none;
+    background-color: #F9FBFF;
+    font-size: 14px;
+    margin-left: 20px;
+    outline: none;
+    color: #949494;
+}
+
+header button{
+    color: white;
+    background-color: #089BAB;
+    border-radius: 20px;
+    border: none;
+    outline: none;
+    padding: 5px 30px;
+    cursor: pointer;
+}
+
+.table-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 10px auto;
+    height: 90%;
+    overflow-y: auto;
+    margin-top: 40px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead th {
+    color: #B5B7C0;
+    text-align: left;
+    font-weight: lighter;
+    padding: 10px 15px;
+    border-bottom: 1px solid #B5B7C0;
+}
+
+tbody tr {
+    border-bottom: 1px solid #B5B7C0;
+}
+
+tbody tr:last-child {
+    border-bottom: none;
+}
+
+tbody td {
+    padding: 25px 15px;
+}
+
+.info {
+    display: flex;
+    align-items: center;
+}
+
+td >button {
+    border: none;
+    outline: none;
+    padding: 3px 10px;
+    border-radius: 3px;
+}
+
+.button-green {
+    background-color: rgba(22, 192, 152, 0.38);
+    color: #008767;
+    border: solid 1px #008767;
+}
+.button-red {
+    background-color: #FFC5C5;
+    color: #DF0404;
+    border: solid 1px #DF0404
+}
+
+.info img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+}
+
+.total-results {
+    font-size: 16px;
+}
+
+.pagination {
+    display: flex;
+    gap: 10px;
+}
+
+.page-number {
+    padding: 5px 10px;
+    border: 1px solid #B5B7C0;
+    border-radius: 4px;
+    cursor: pointer;
+}

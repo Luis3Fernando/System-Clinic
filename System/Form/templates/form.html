@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <title>Formulario</title>
+    <link rel="stylesheet" href="{% static 'styles/form.css' %}">
+</head>
+<body>
+   <main>
+    <div class="left">
+        <img src="{% static 'img/enfermera.jpg' %}" alt="">
+        <div class="capa"></div>
+        <div class="extra">
+            <div>
+                <div></div>
+            </div>
+
+            <h1>Aless Dent</h1>
+            <p>Contamos con un equipo de profesionales altamente capacitados.</p>
+        </div>
+    </div>
+    <div class="right">
+        <button id="b-back" onclick="window.location.href='{% url 'home' %}'">Atras</button>
+        <form method="post" action="{% url 'login' %}">
+          {% csrf_token %}
+          <h1>Iniciar Sesión</h1>
+          <p>Inicia sesión con tu cuenta asignada por la institución</p>
+          <div class="input-content">
+              <img src="{% static 'icon/usuario-form.png'%}" alt="" />
+              <input type="text" name="username" placeholder="Usuario" required>
+          </div>
+          <div class="input-content">
+              <img src="{% static 'icon/candado.png'%}" alt="" />
+              <input type="password" name="password" placeholder="Contraseña" required>
+          </div>
+          <button type="submit">Ingresar</button>
+          {% if error %}
+              <p>{{ error }}</p>
+          {% endif %}
+      </form>
+      
+    </div>
+   </main>
+</body>
+</html>
