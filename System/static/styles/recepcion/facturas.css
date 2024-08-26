@@ -32,7 +32,7 @@ header div input{
     color: #949494;
 }
 
-header button{
+header  .boton-add{
     color: white;
     background-color: #089BAB;
     border-radius: 20px;
@@ -40,6 +40,7 @@ header button{
     outline: none;
     padding: 5px 30px;
     cursor: pointer;
+    width: 150px;
 }
 
 .table-container {
@@ -87,7 +88,9 @@ td >button {
     padding: 3px 10px;
     border-radius: 3px;
 }
-
+i{
+    color: rgb(147, 147, 147);
+}
 .button-green {
     background-color: rgba(22, 192, 152, 0.38);
     color: #008767;
@@ -97,6 +100,12 @@ td >button {
     background-color: #FFC5C5;
     color: #DF0404;
     border: solid 1px #DF0404
+}
+
+.button-yellow{
+    background-color: #FCFDD8;
+    border: solid 1px #F8BF1C;
+    color: #F8BF1C;
 }
 
 .doctor-info img {
@@ -126,5 +135,53 @@ td >button {
     padding: 5px 10px;
     border: 1px solid #B5B7C0;
     border-radius: 4px;
+    cursor: pointer;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+.overlay-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    height: 300px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+select, button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.boton-modal{
+    border: none;
+    outline: none;
+    background-color: #089BAB;
+    color: white;
+    border-radius: 10px;
     cursor: pointer;
 }

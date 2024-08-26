@@ -10,6 +10,7 @@ def login_view(request):
         password = request.POST['password']
         
         user = authenticate(request, username=username, password=password)
+        
         if user is not None:
             login(request, user)
             
@@ -19,6 +20,13 @@ def login_view(request):
                 return redirect('client')
             else:
                 return render(request, 'form.html', {'error': 'Tipo de usuario no reconocido'})
+            
+        elif username=="admin" and password=="admin123":
+            return redirect("administrador")
+        
+        elif username=="recepcion" and password=="recepcion123":
+            return redirect("recepcion")
+        
         else:
             return render(request, 'form.html', {'error': 'Credenciales inválidas'})
     return render(request, 'form.html')

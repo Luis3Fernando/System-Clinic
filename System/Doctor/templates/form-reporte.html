@@ -13,9 +13,16 @@
 {% endblock %}
 
 {% block content %}
+{% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <li class="{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
     <h1 class="titulo">Crear Reporte</h1>
     <div class="reporte-form">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-row">
                 <div class="form-group">
@@ -23,7 +30,7 @@
                     <select name="cita" id="id_cita">
                         <option value="">Seleccione una cita</option>
                         {% for cita in citas %}
-                            <option value="{{ cita.id }}">{{ cita.paciente.nombre }} {{ cita.paciente.apellidos }} - {{ cita.fecha }} - {{cita.servicio}}</option>
+                            <option value="{{ cita.id }}">{{ cita.paciente.nombre }} {{ cita.paciente.apellidos }} - {{ cita.fecha }} - {{ cita.servicio }}</option>
                         {% endfor %}
                     </select>
                     {% if errors.cita %}
@@ -50,7 +57,24 @@
                     <textarea name="recomendaciones" id="id_recomendaciones" rows="5">{{ request.POST.recomendaciones }}</textarea>
                 </div>
             </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_imagenes">Imágenes</label>
+                    <input type="file" name="imagenes" id="id_imagenes" multiple>
+                </div>
+            </div>
             <button type="submit">Guardar Reporte</button>
         </form>
     </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    setTimeout(function() {
+        const messages = document.querySelector('.messages');
+        if (messages) {
+            messages.style.display = 'none';
+        }
+    }, 3000);
+</script>
 {% endblock %}

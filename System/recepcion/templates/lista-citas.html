@@ -1,0 +1,193 @@
+{% extends 'generic-recepcion.html' %}
+
+{% block title %}Citas{% endblock %}
+{% block extra_css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/recepcion/facturas.css' %}">
+{% endblock %}
+
+{% block cita_active %}active{% endblock %}
+
+{% block cita_icon %}
+<img src="{% static 'icon/cita-color.png' %}" alt="cita">
+{% endblock %}
+
+{% block content %}
+<header>
+    <h1>Todas las citas</h1>
+    <div>
+        <img src="{% static 'icon/busqueda.png'%}" alt="busqueda">
+        <input type="text" id="searchInput" placeholder="Buscar">
+    </div>
+    <button class="boton-add" onclick="window.location.href='{% url 'agregar-cita' %}'">Agregar</button>
+</header>
+
+<div class="table-container">
+    <table id="facturasTable">
+        <thead>
+            <tr>
+                <th>Paciente</th>
+                <th>Doctor</th>
+                <th>Servicio</th>
+                <th>Fecha</th>
+                <th>Hora</th>
+                <th>Notas</th>
+                <th>Estado</th>
+                <th>Opciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cita in citas %}
+                <tr>
+                    <td>{{ cita.paciente.nombre }} {{ cita.paciente.apellidos}}</td> 
+                    <td>{{ cita.doctor.nombre }} {{ cita.doctor.apellidos}}</td>
+                    <td>{{ cita.servicio }}</td>
+                    <td>{{ cita.fecha|date:"F" }} - {{ cita.fecha|date:"j" }}</td>
+                    <td>{{ cita.hora_inicio }}</td>
+                    <td>
+                        {% if cita.notas %}
+                            <i>{{ cita.notas }}</i>
+                        {% else %}
+                            <i>No hay notas adicionales</i>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if cita.estado == 'completada' %}
+                            <button class="button-green">Completada</button>
+                        {% elif cita.estado == 'cancelada' %}
+                            <button class="button-red">Cancelada</button>
+                        {% else %}
+                            <button class="button-yellow">Pendiente</button>
+                        {% endif %}
+                    </td>                    
+                    <td>
+                        <button class="button-details" data-factura-id="{{ cita.id }}" data-factura-estado="{{ cita.estado }}">Detalles</button>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="overlay" id="overlay">
+    <div class="overlay-content">
+        <span class="close-btn" id="closeOverlay">&times;</span>
+        <h2>Detalles de la Cita</h2>
+        <p id="citaId">ID de la Cita: </p>
+
+        <form id="estadoForm">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="estado">Estado de la Cita:</label>
+                <select name="estado" id="estado">
+                    <option value="programada">Programada</option>
+                    <option value="completada">Completada</option>
+                    <option value="cancelada">Cancelada</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="notas">Notas:</label>
+                <textarea id="notas" name="notas" rows="3"></textarea>
+            </div>
+            <button type="submit" id="guardarBtn">Guardar</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+
+{% block extra_js %}
+<script>
+    document.querySelectorAll('.card').forEach(card => {
+        card.onclick = function() {
+            const citaId = this.getAttribute('data-cita-id');
+            document.getElementById('citaId').textContent = `ID de la Cita: ${citaId}`;
+            document.getElementById('overlay').style.display = "flex";
+            document.getElementById('estadoForm').setAttribute('data-cita-id', citaId);
+        }
+    });
+
+    document.getElementById('closeOverlay').onclick = function() {
+        document.getElementById('overlay').style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('overlay')) {
+            document.getElementById('overlay').style.display = "none";
+        }
+    }
+
+    // Muestra el modal y configura los datos de la cita
+    document.querySelectorAll('.button-details').forEach(button => {
+        button.onclick = function() {
+            const citaId = this.getAttribute('data-factura-id');
+            const estado = this.getAttribute('data-factura-estado');
+            
+            // Configura el contenido del modal
+            document.getElementById('citaId').textContent = `ID de la Cita: ${citaId}`;
+            document.getElementById('estado').value = estado;
+            document.getElementById('estadoForm').setAttribute('data-cita-id', citaId);
+            
+            // Muestra el modal
+            document.getElementById('overlay').style.display = "flex";
+        }
+    });
+
+    // Cierra el modal al hacer clic en el botón de cerrar o fuera del modal
+    document.getElementById('closeOverlay').onclick = function() {
+        document.getElementById('overlay').style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('overlay')) {
+            document.getElementById('overlay').style.display = "none";
+        }
+    }
+
+    // Maneja el envío del formulario para actualizar el estado de la cita
+    document.getElementById('estadoForm').onsubmit = function(event) {
+        event.preventDefault(); // Evita el envío del formulario estándar
+        const citaId = this.getAttribute('data-cita-id');
+        const estado = document.getElementById('estado').value;
+        const notas = document.getElementById('notas').value;
+        
+        fetch(`/recepcion/actualizar_estado_notas_cita/${citaId}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ estado, notas })
+        })
+        .then(response => {
+            if (response.ok) {
+                document.getElementById('overlay').style.display = "none";
+                location.reload(); // Recarga la página para reflejar el cambio
+            } else {
+                console.error('Error al actualizar el estado de la cita.');
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('searchInput');
+        const tableRows = document.querySelectorAll('#facturasTable tbody tr');
+
+        searchInput.addEventListener('keyup', function() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+
+            tableRows.forEach(row => {
+                const pacienteName = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+                const doctorName = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+
+                if (pacienteName.includes(searchTerm) || doctorName.includes(searchTerm)) {
+                    row.style.display = ''; 
+                } else {
+                    row.style.display = 'none';  
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

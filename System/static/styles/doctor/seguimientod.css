@@ -1,0 +1,181 @@
+/* Galería de Imágenes */
+.gallery {
+    display: flex;
+    flex-wrap: wrap;
+    overflow-y: auto;
+    background: #f7f7f7;
+    padding: 10px;
+    gap: 10px;
+    height: 55vh; /* Altura del contenedor de imágenes */
+}
+
+.gallery img {
+    width: calc(30% - 20px);
+    margin: 0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    object-fit: cover;
+}
+
+.gallery img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+}
+
+/* Modal */
+.modal {
+    display: none; /* Ocultar por defecto */
+    position: fixed; /* Fijar en la pantalla */
+    z-index: 1000; /* Por encima de otros elementos */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; 
+    background-color: rgba(0, 0, 0, 0.8); 
+    text-align: center; 
+    justify-content: center;
+    align-items: center;
+}
+
+.modal img {
+    max-width: 90%; /* Ajustar el ancho máximo */
+    max-height: 80vh; /* Ajustar la altura máxima */
+    margin: auto; /* Centrar imagen horizontalmente */
+    display: block; /* Asegurar que la imagen se comporte como bloque */
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #fff;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover,
+.close:focus {
+    color: #ddd;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+.overlay-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    height: 400px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+}   
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+select, button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+button{
+    border: none;
+    outline: none;
+    background-color: #089BAB;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 200px;
+}
+
+.container_circulos {
+    position: relative;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.timeline {
+    display: flex;
+    align-items: center;
+    padding: 50px;
+    height: 130px;  
+    position: relative;
+    background-color: rgb(247, 247, 247);
+    width: max-content;
+    margin-top: 10px;
+}
+
+.dot {
+    position: relative;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: gray;
+    margin-right: 200px;
+    flex-shrink: 0;
+    margin-top: -20px;
+}
+
+.dot.active {
+    background-color: #089BAB;
+}
+
+h3{
+    color: #888;
+    font-weight: lighter;
+    margin: 10px;
+}
+.dot-date {
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+/* Ocultar la última separación para la última bolita */
+.timeline .dot:last-child {
+    margin-right: 0;
+}
+
+.container_circulos::-webkit-scrollbar {
+    height: 10px;
+}
+
+.container_circulos::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.container_circulos::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+}
+
+.container_circulos::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

@@ -13,6 +13,13 @@
 {% endblock %}
 
 {% block content %}
+{% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <li class="{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
 <div class="container-form">
     <h1>Agregar Paciente</h1>
     <form action="{% url 'agregar-cliente-admin' %}" method="post" enctype="multipart/form-data">
@@ -76,4 +83,15 @@
         </div>
     </form>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    setTimeout(function() {
+        const messages = document.querySelector('.messages');
+        if (messages) {
+            messages.style.display = 'none';
+        }
+    }, 3000);
+</script>
 {% endblock %}

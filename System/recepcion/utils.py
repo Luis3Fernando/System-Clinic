@@ -4,6 +4,7 @@ import jinja2
 import pdfkit
 import os
 from django.conf import settings
+from django.core.mail import send_mail
 
 def generar_numero_factura():
     return str(random.randint(100000, 999999))
@@ -100,3 +101,14 @@ def create_pdf(ruta_template, info, rutacss=''):
     ruta_salida = os.path.join(settings.STATICFILES_DIRS[0], 'pdf', 'resultado.pdf')
     pdfkit.from_string(html, ruta_salida, css=rutacss if rutacss else None, options=options, configuration=config)
     return ruta_salida
+
+
+
+def enviar_correo(destinatario, asunto, mensaje):
+    send_mail(
+        asunto,  # Subject
+        mensaje,  # Message
+        settings.DEFAULT_FROM_EMAIL,  # From email
+        [destinatario],  # To email
+        fail_silently=False,  # Raise error if email fails to send
+    )

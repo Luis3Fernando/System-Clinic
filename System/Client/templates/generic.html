@@ -41,6 +41,12 @@
                         {% endblock %}
                         Historial Médico
                     </a></li>
+                    <li class="{% block seguir_active %}{% endblock %}"><a href="{% url 'client' %}seguimientoc/">
+                        {% block seguir_icon %}
+                        <img src="{% static 'icon/seguimiento-selected.png' %}" alt="Seguimiento">
+                        {% endblock %}
+                        Seguimiento
+                    </a></li>
                     <li class="{% block user_active %}{% endblock %}"><a href="{% url 'client' %}perfil/"> 
                         {% block profile_icon %}
                         <img src="{% static 'icon/user-selected.png' %}" alt="Perfil">

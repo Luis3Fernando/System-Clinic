@@ -4,6 +4,8 @@ from django.utils import timezone
 from Home.models import Paciente, Cita, Factura, Reporte
 from .utils import *
 from django.http import HttpResponseForbidden, HttpResponse
+from django.contrib import messages
+from django.http import JsonResponse
 
 def Client(request):
     today = date.today()
@@ -171,3 +173,50 @@ def generate_pdf(request, idCita):
         response = HttpResponse(pdf.read(), content_type='application/pdf')
         response['Content-Disposition'] = 'inline; filename="resultado.pdf"'
         return response
+    
+def Seguimiento(request):
+    if request.user.is_authenticated:
+        try:
+            paciente = Paciente.objects.get(user=request.user)
+        except Paciente.DoesNotExist:
+            paciente = None
+            
+        if paciente is not None:
+            citas = Cita.objects.filter(
+                    paciente=paciente,
+                    servicio__nombre='Ortodoncia'
+                    ).order_by('fecha')
+    
+    
+            ultimo_reporte = Reporte.objects.filter(cita__in=citas).last()
+            imagenes = ultimo_reporte.imagenes.all() if ultimo_reporte else []
+    
+            context = {
+                'paciente': paciente,
+                'reportes': citas,
+                'imagenes': imagenes,
+                'no_reportes': not citas.exists(),
+            }
+            return render(request, 'seguimiento-client.html', context)
+        else:
+            return redirect('login')
+    else:
+        return redirect('login')
+    
+def obtener_imagenes_reporte(request, idCita):
+    reporte = Reporte.objects.filter(cita_id=idCita).last()
+    imagenes = []
+
+    if reporte:
+        imagenes = [{'imagen': request.build_absolute_uri(imagen.imagen.url)} for imagen in reporte.imagenes.all()]
+
+    return JsonResponse({'imagenes': imagenes})    
+
+def verificar_reporte(request, cita_id):
+    cita = get_object_or_404(Cita, id=cita_id)
+    try:
+        reporte = Reporte.objects.get(cita=cita)
+        return redirect('generate_pdf', idReporte=reporte.id)
+    except Reporte.DoesNotExist:
+        messages.error(request, "No hay reporte creado para esta cita.")
+        return redirect('seguimientod')

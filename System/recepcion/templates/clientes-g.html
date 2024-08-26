@@ -13,6 +13,13 @@
 {% endblock %}
 
 {% block content %}
+{% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <li class="{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
 <header>
     <h1>Lista de Clientes</h1>
     <div>
@@ -81,5 +88,13 @@
             });
         });
     });
+
+    setTimeout(function() {
+        const messages = document.querySelector('.messages');
+        if (messages) {
+            messages.style.display = 'none';
+        }
+    }, 3000);
+    
 </script>
 {% endblock %}

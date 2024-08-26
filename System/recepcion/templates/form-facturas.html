@@ -33,7 +33,7 @@
                     <label for="cita">Cita</label>
                     <select name="cita" id="cita" class="form-control" required>
                         {% for cita in citas %}
-                        <option value="{{ cita.id }}">Paciente: {{ cita.paciente.nombre }} - {{ cita.fecha }} - {{cita.hora_inicio}}</option>
+                        <option value="{{ cita.id }}">Paciente: {{ cita.paciente.nombre }} - {{ cita.fecha }} {{cita.notas}}</option>
                         {% endfor %}
                     </select>
                 </div>

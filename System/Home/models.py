@@ -87,6 +87,13 @@ class Reporte(models.Model):
 
     def __str__(self):
         return f"Reporte de {self.cita}"
+
+class ReporteImagen(models.Model):
+    reporte = models.ForeignKey(Reporte, on_delete=models.CASCADE, related_name='imagenes')
+    imagen = models.ImageField(upload_to='images/reportes/', null=True, blank=True)
+
+    def __str__(self):
+        return f"Imagen para reporte {self.reporte.id}"
  
 class Factura(models.Model):
     cita = models.OneToOneField(Cita, on_delete=models.CASCADE)

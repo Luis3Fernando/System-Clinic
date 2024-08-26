@@ -35,6 +35,13 @@
                         Citas
                     </a></li>
 
+                    <li class="{% block seguir_active %}{% endblock %}"><a href="{% url 'doctor' %}seguimientod/">
+                        {% block seguir_icon %}
+                        <img src="{% static 'icon/seguimiento-selected.png' %}" alt="Seguimiento">
+                        {% endblock %}
+                        Seguimiento
+                    </a></li>
+
                     <li class="{% block report_active %}{% endblock %}"><a href="{% url 'doctor' %}reportes/">
                         {% block report_icon %}
                         <img src="{% static 'icon/report-selected.png' %}" alt="Reporte">

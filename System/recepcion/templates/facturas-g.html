@@ -13,17 +13,24 @@
 {% endblock %}
 
 {% block content %}
+{% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <li class="{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
 <header>
     <h1>Historial de Facturas</h1>
     <div>
         <img src="{% static 'icon/busqueda.png'%}" alt="busqueda">
         <input type="text" id="searchInput" placeholder="Buscar">
     </div>
-    <button onclick="window.location.href='{% url 'agregar-factura' %}'">Agregar</button>
+    <button class="boton-add" onclick="window.location.href='{% url 'agregar-factura' %}'">Agregar</button>
 </header>
 
 <div class="table-container">
-    <table id="doctorsTable">
+    <table id="facturasTable">
         <thead>
             <tr>
                 <th>Detalles</th>
@@ -53,40 +60,118 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if factura.estado == 'cancelada' %}
-                            <a href="{% url 'generate_boleta_pdf' factura.id %}" target="_blank"><button class="button-green">Generar boleta</button></a>
-                        {% else %}
-                            <i>
-                                No hay opciones
-                            </i>
-                        {% endif %}
+                        <button class="button-details" data-factura-id="{{ factura.id }}" data-factura-estado="{{ factura.estado }}">Detalles</button>
                     </td>
                 </tr>
-            {% endfor %}            
+            {% endfor %}
         </tbody>
     </table>
+</div>
+
+<div class="overlay" id="overlay">
+    <div class="overlay-content">
+        <span class="close-btn" id="closeOverlay">&times;</span>
+        <h2>Detalles de la Factura</h2>
+        <p id="facturaId">ID de la Factura: </p>
+
+        <p id="estadoFactura"></p>
+    
+        <form id="estadoForm">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="estado">Estado de la Factura:</label>
+                <select name="estado" id="estado">
+                    <option value="en_deuda">En deuda</option>
+                    <option value="cancelada">Cancelada</option>
+                </select>
+            </div>
+            <button class="boton-modal" type="submit" id="guardarBtn">Guardar</button>
+            <button class="boton-modal" id="generateBoletaBtn" type="button">Generar Boleta</button>
+            <p id="boletaMessage"></p>
+        </form>
+    </div>
 </div>
 {% endblock %}
 
 {% block extra_js %}
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        const searchInput = document.getElementById('searchInput');
-        const tableRows = document.querySelectorAll('#doctorsTable tbody tr');
+        const overlay = document.getElementById('overlay');
+        const closeOverlay = document.getElementById('closeOverlay');
+        const estadoForm = document.getElementById('estadoForm');
+        const estadoSelect = document.getElementById('estado');
+        const facturaIdP = document.getElementById('facturaId');
+        const estadoFacturaP = document.getElementById('estadoFactura');
+        const generateBoletaBtn = document.getElementById('generateBoletaBtn');
+        const boletaMessageP = document.getElementById('boletaMessage');
 
-        searchInput.addEventListener('keyup', function() {
-            const searchTerm = searchInput.value.toLowerCase().trim();
-
-            tableRows.forEach(row => {
-                const doctorName = row.querySelector('.info span').textContent.toLowerCase();
-
-                if (doctorName.includes(searchTerm)) {
-                    row.style.display = ''; 
+        document.querySelectorAll('.button-details').forEach(button => {
+            button.onclick = function() {
+                const facturaId = this.getAttribute('data-factura-id');
+                const facturaEstado = this.getAttribute('data-factura-estado');
+                
+                facturaIdP.textContent = `ID de la Factura: ${facturaId}`;
+                estadoSelect.value = facturaEstado;
+                
+                // Update the state message and button visibility
+                if (facturaEstado === 'cancelada') {
+                    estadoFacturaP.textContent = 'Estado: Cancelado';
+                    generateBoletaBtn.style.display = 'inline-block';
+                    boletaMessageP.textContent = '';
                 } else {
-                    row.style.display = 'none';  
+                    estadoFacturaP.textContent = 'Estado: Pendiente';
+                    generateBoletaBtn.style.display = 'none';
+                    boletaMessageP.textContent = 'No se puede generar boleta porque la factura está pendiente.';
+                }
+
+                overlay.style.display = "flex";
+                estadoForm.setAttribute('data-factura-id', facturaId);
+            }
+        });
+
+        closeOverlay.onclick = function() {
+            overlay.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == overlay) {
+                overlay.style.display = "none";
+            }
+        }
+
+        estadoForm.onsubmit = function(event) {
+            event.preventDefault();
+            const facturaId = this.getAttribute('data-factura-id');
+            const estado = estadoSelect.value;
+
+            fetch(`/recepcion/actualizar_estado_factura/${facturaId}/`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ estado })
+            })
+            .then(response => {
+                if (response.ok) {
+                    overlay.style.display = "none";
+                    location.reload();
+                } else {
+                    console.error('Error al actualizar el estado de la factura.');
                 }
             });
-        });
+        }
+
+        generateBoletaBtn.onclick = function() {
+            const facturaId = estadoForm.getAttribute('data-factura-id');
+            window.open(`/recepcion/generate_boleta_pdf/${facturaId}/`, '_blank');
+        }
     });
+    setTimeout(function() {
+        const messages = document.querySelector('.messages');
+        if (messages) {
+            messages.style.display = 'none';
+        }
+    }, 3000);
 </script>
 {% endblock %}

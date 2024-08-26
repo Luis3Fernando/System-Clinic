@@ -1,0 +1,211 @@
+{% extends 'generic_doctor.html' %}
+
+{% block title %}Seguimiento{% endblock %}
+{% block extra_css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles/doctor/seguimientod.css' %}">
+{% endblock %}
+
+{% block seguir_active %}active{% endblock %}
+
+{% block seguir_icon %}
+<img src="{% static 'icon/seguimiento-color.png' %}" alt="seguimiento">
+{% endblock %}
+{% block content %}
+    <h2>Seguimiento de Ortodoncia</h2>
+    <h3>Citas</h3>
+    <button class="boton-add" onclick="openModal()">Agregar próxima cita</button>
+    <div class="container_circulos">
+        <div class="timeline">
+            {% for cita in reportes %}
+                <div class="dot {% if cita.estado == 'completada' %}active{% else %}incomplete{% endif %}" 
+                    title="{{ cita.fecha }}"
+                    data-id="{{ cita.id }}"
+                    onclick="cargarImagenes({{ cita.id }})">
+                {% if cita.estado == 'completada' %}
+                    <a href="{% url 'verificar_reporte' cita.id %}" target="_blank">
+                        <span class="dot-date">{{ cita.fecha }} - {{cita.hora_inicio}}</span>
+                    </a>
+                {% else %}
+                    <span class="dot-date">{{ cita.fecha }} - {{cita.hora_inicio}}</span>
+                {% endif %}
+                </div>
+            {% empty %}
+                <p>No hay citas disponibles para el servicio de Ortodoncia.</p>
+            {% endfor %}
+        </div>     
+    </div>
+
+    <!-- Galería de Imágenes -->
+    <h3>Galería de Imágenes del Último Reporte</h3>
+    {% if no_reportes %}
+        <p>No hay reportes disponibles para el servicio de Ortodoncia.</p>
+    {% else %}
+        <div class="gallery">
+            {% for imagen in imagenes %}
+                <img src="{{ imagen.imagen.url }}" alt="Imagen del Reporte" onclick="openViewImageModal(this.src)">
+            {% empty %}
+                <p>No hay imágenes disponibles en el último reporte.</p>
+            {% endfor %}
+        </div>
+
+        <!-- Modal para Imagen Grande -->
+        <div id="viewImageModal" class="modal" onclick="closeViewImageModal()">
+            <span class="close">&times;</span>
+            <img id="viewImage" src="" alt="Imagen en grande">
+        </div>
+    {% endif %}
+</div>
+
+<!-- Modal para Agregar Próxima Cita -->
+<div class="overlay" id="overlay">
+    <div class="overlay-content">
+        <span class="close-btn" id="closeOverlay">&times;</span>
+        <h2>Agregar Próxima Cita</h2>
+
+        <form id="addCitaForm" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="paciente" value="{{ paciente.id }}">
+
+            <div class="form-group">
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha" name="fecha" required>
+            </div>
+            <div class="form-group">
+                <label for="hora_inicio">Hora de Inicio:</label>
+                <input type="time" id="hora_inicio" name="hora_inicio" required>
+            </div>
+            <div class="form-group">
+                <label for="hora_fin">Hora de Fin:</label>
+                <input type="time" id="hora_fin" name="hora_fin" required>
+            </div>
+            <div class="form-group">
+                <label for="motivo">Motivo:</label>
+                <textarea id="motivo" name="motivo" rows="3"></textarea>
+            </div>
+            <div class="form-group">
+                <label for="notas">Notas:</label>
+                <textarea id="notas" name="notas" rows="3"></textarea>
+            </div>
+            <button type="submit" id="guardarBtn">Guardar</button>
+        </form>
+    </div>
+
+    
+{% endblock %} 
+
+
+
+{% block extra_js %}
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const timelineContainer = document.querySelector('.container_circulos');
+            const activeDot = document.querySelector('.dot.active');
+            
+            if (activeDot) {
+                const containerWidth = timelineContainer.offsetWidth;
+                const dotOffsetLeft = activeDot.offsetLeft;
+                const dotWidth = activeDot.offsetWidth;
+
+                const scrollPosition = dotOffsetLeft - (containerWidth / 2) + (dotWidth / 2);
+                timelineContainer.scrollLeft = scrollPosition;
+            }
+        });
+
+    function openModal() {
+        document.getElementById('overlay').style.display = "flex";
+    }
+
+    function closeModal() {
+        document.getElementById('overlay').style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('overlay')) {
+            document.getElementById('overlay').style.display = "none";
+        }
+    }
+
+    document.getElementById('closeOverlay').onclick = function() {
+        closeModal();
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+        const timelineContainer = document.querySelector('.container_circulos');
+        const activeDot = document.querySelector('.dot.active');
+        
+        if (activeDot) {
+            const containerWidth = timelineContainer.offsetWidth;
+            const dotOffsetLeft = activeDot.offsetLeft;
+            const dotWidth = activeDot.offsetWidth;
+    
+            const scrollPosition = dotOffsetLeft - (containerWidth / 2) + (dotWidth / 2);
+            timelineContainer.scrollLeft = scrollPosition;
+        }
+    });
+    
+
+    document.getElementById('addCitaForm').onsubmit = function(event) {
+        event.preventDefault();
+        
+        const formData = new FormData(this);
+        
+        fetch(`/doctor/agregar_cita_ortodoncia/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                closeModal();
+                location.reload();
+            } else {
+                console.error('Error al agregar la cita.');
+            }
+        });
+    }
+
+    function cargarImagenes(citaId) {
+        fetch(`/doctor/obtener_imagenes_reporte/${citaId}/`)
+            .then(response => response.json())
+            .then(data => {
+                const gallery = document.querySelector('.gallery');
+                gallery.innerHTML = '';  // Limpiar la galería actual
+                
+                if (data.imagenes.length > 0) {
+                    data.imagenes.forEach(imagen => {
+                        const imgElement = document.createElement('img');
+                        imgElement.src = imagen.imagen;
+                        imgElement.alt = 'Imagen del Reporte';
+                        imgElement.onclick = function() {
+                            openViewImageModal(this.src);
+                        };
+                        gallery.appendChild(imgElement);
+                    });
+                } else {
+                    gallery.innerHTML = '<p>No hay imágenes disponibles en este reporte.</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Error al cargar las imágenes:', error);
+            });
+    }
+    
+
+     // Función para abrir el modal de imagen
+     function openViewImageModal(src) {
+        const viewImageModal = document.getElementById('viewImageModal');
+        const viewImage = document.getElementById('viewImage');
+        viewImage.src = src;
+        viewImageModal.style.display = 'block';
+    }
+
+    // Función para cerrar el modal de imagen
+    function closeViewImageModal() {
+        const viewImageModal = document.getElementById('viewImageModal');
+        viewImageModal.style.display = 'none';
+    }
+</script>
+{% endblock %}

@@ -20,10 +20,9 @@
             {% csrf_token %}
             <div class="form-group">
                 <label for="paciente">Paciente</label>
-                <select name="paciente" id="paciente" class="form-control">
-                    {% for paciente in pacientes %}
-                    <option value="{{ paciente.id }}">{{ paciente.nombre }} {{ paciente.apellidos }}</option>
-                    {% endfor %}
+                <input type="text" id="paciente-search" class="form-control" placeholder="Buscar paciente...">
+                <select name="paciente" id="paciente" class="form-control" size="5" required>
+                    <!-- Opciones se llenarán dinámicamente con JavaScript -->
                 </select>
             </div>
             
@@ -76,15 +75,6 @@
             </div>
             
             <div class="form-group">
-                <label for="estado">Estado</label>
-                <select name="estado" id="estado" class="form-control">
-                    <option value="programada" selected>Programada</option>
-                    <option value="completada">Completada</option>
-                    <option value="cancelada">Cancelada</option>
-                </select>
-            </div>
-            
-            <div class="form-group">
                 <label for="notas">Notas</label>
                 <textarea id="notas" name="notas" class="form-control" rows="5"></textarea>
             </div>
@@ -92,4 +82,28 @@
             <button type="submit" class="btn btn-primary">Crear Cita</button>
         </form>
     </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const searchInput = document.getElementById('paciente-search');
+        const pacienteSelect = document.getElementById('paciente');
+        
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value;
+            fetch(`/recepcion/search-pacientes/?q=${query}`)
+                .then(response => response.json())
+                .then(data => {
+                    pacienteSelect.innerHTML = ''; // Clear previous options
+                    data.pacientes.forEach(paciente => {
+                        const option = document.createElement('option');
+                        option.value = paciente.id;
+                        option.textContent = `${paciente.nombre} ${paciente.apellidos}`;
+                        pacienteSelect.appendChild(option);
+                    });
+                });
+        });
+    });
+</script>
 {% endblock %}

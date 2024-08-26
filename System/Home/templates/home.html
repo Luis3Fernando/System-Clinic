@@ -1,39 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     {% load static %}
-    <link rel="stylesheet" href="{% static 'styles/home.css' %}">
-    <title>Document</title>
-</head>
-<body>
+    <link rel="stylesheet" href="{% static 'styles/home.css' %}" />
+    <title>Aless Dent - Sonrisas Saludables</title>
+  </head>
+  <body>
     <header class="site-header">
+      <div class="container">
         <div class="logo">
-            <a href="#">Aless Dent</a>
+          <a href="#">Aless Dent</a>
         </div>
-       
-        <div class="complements">
-            <nav class="nav">
-                <ul>
-                    <li><a href="#">Inicio</a></li>
-                    <li><a href="#">Servicios</a></li>
-                    <li><a href="#">Novedades</a></li>
-                </ul>
-            </nav>
-            <button onclick="window.location.href='{% url 'login' %}'" >Iniciar Sesión</button>
+        <div class="container_2">
+          <nav class="nav">
+            <ul>
+              <li><a href="#inicio">Inicio</a></li>
+              <li><a href="#servicios">Servicios</a></li>
+              <li><a href="#novedades">Novedades</a></li>
+            </ul>
+          </nav>
+          <button
+            class="bInit"
+            onclick="window.location.href='{% url 'login' %}'"
+          >
+            Iniciar Sesión
+          </button>
         </div>
+      </div>
     </header>
     <main class="site-main">
+      <section id="inicio" class="home-section">
         <div class="left">
-            <div class="circle-b"></div>
-            <div class="circle-s"></div>
-            <img src="{% static 'img/cover-nurse.png'%}" alt="">
+          <div class="circle-b"></div>
+          <div class="circle-s"></div>
+          <img src="{% static 'img/cover-nurse.png' %}" alt="Cuidado Dental" />
         </div>
         <div class="right">
-            <h1>Sonrisas saludables</h1>
-            <h2>vidas felices</h2>
+          <h1>Sonrisas saludables</h1>
+          <h2>Vidas felices</h2>
         </div>
+      </section>
+      <section id="servicios" class="section">
+        <h2>Nuestros Servicios</h2>
+        <div class="services-container">
+          <div class="service-card">
+            <img src="{% static 'img/service1.jpg' %}" alt="Servicio 1" />
+            <h3>Blanqueamiento Dental</h3>
+            <p>
+              Logra una sonrisa brillante con nuestros servicios de
+              blanqueamiento dental.
+            </p>
+          </div>
+          <div class="service-card">
+            <img src="{% static 'img/service3.jpg' %}" alt="Servicio 2" />
+            <h3>Ortodoncia</h3>
+            <p>
+              Corrige la alineación de tus dientes con nuestros tratamientos de
+              ortodoncia.
+            </p>
+          </div>
+          <div class="service-card">
+            <img src="{% static 'img/service2.jpg' %}" alt="Servicio 3" />
+            <h3>Implantes Dentales</h3>
+            <p>
+              Recupera la funcionalidad y estética de tu sonrisa con implantes
+              de alta calidad.
+            </p>
+          </div>
+        </div>
+      </section>
+      <section id="novedades" class="section">
+        <h2>Últimas Novedades</h2>
+        <div class="news-container">
+          <div class="news-card">
+            <img src="{% static 'img/news1.jpg' %}" alt="Novedad 1" />
+            <h3>Tecnología Avanzada</h3>
+            <p>
+              Incorporamos lo último en tecnología para ofrecerte un servicio de
+              primera.
+            </p>
+          </div>
+          <div class="news-card">
+            <img src="{% static 'img/news2.jpg' %}" alt="Novedad 2" />
+            <h3>Nuevos Tratamientos</h3>
+            <p>
+              Explora nuestros nuevos tratamientos para mantener una sonrisa
+              perfecta.
+            </p>
+          </div>
+        </div>
+        
+        <div class="circle-b2"></div>
+        <div class="circle-s1"></div>
+    </section>
     </main>
-</body>
+  </body>
 </html>

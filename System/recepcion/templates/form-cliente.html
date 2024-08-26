@@ -15,7 +15,7 @@
 {% block content %}
 <div class="container-form">
     <h1>Agregar Paciente</h1>
-    <form action="{% url 'agregar-doctor' %}" method="post" enctype="multipart/form-data">
+    <form action="{% url 'agregar-paciente' %}" method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="row">
             <div class="form-group">
@@ -24,7 +24,7 @@
             </div>
             <div class="form-group">
                 <label for="foto-perfil">Foto de Perfil (JPG)</label>
-                <input type="file" id="foto-perfil" name="foto-perfil" accept=".jpg" required>
+                <input type="file" id="foto-perfil" name="foto-perfil" accept=".jpg,.jpeg,.png" required>
             </div>
         </div>
         <div class="row">
@@ -67,7 +67,7 @@
                 <input type="text" id="direccion" name="direccion" required>
             </div>
             <div class="form-group">
-                <label for="ocupacion">Ocupacion</label>
+                <label for="ocupacion">Ocupación</label>
                 <input type="text" id="ocupacion" name="ocupacion" required>
             </div>
         </div>
@@ -77,3 +77,15 @@
     </form>
 </div>
 {% endblock %}
+
+{% block extra_js %}
+    <script>
+        setTimeout(function() {
+            const messages = document.querySelector('.messages');
+            if (messages) {
+                messages.style.display = 'none';
+            }
+        }, 3000);
+        
+    </script>
+    {% endblock %}

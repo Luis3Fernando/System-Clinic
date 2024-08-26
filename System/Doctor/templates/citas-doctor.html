@@ -13,6 +13,13 @@
 {% endblock %}
 
 {% block content %}
+{% if messages %}
+  <ul class="messages">
+    {% for message in messages %}
+      <li class="{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+{% endif %}
 <h1>Horario de Citas</h1>
 <div class="top-detail">
     <h3>{{today}}</h3>
@@ -40,16 +47,22 @@
                             {% if slot.0.estado == "completada" %}
                             <div class="card" data-cita-id="{{ slot.0.id }}" id="succes">
                                 <p>{{ slot.0.servicio }}</p>
+                                <p>{{ slot.0.paciente.nombre }}</p>
+                                    <p>{{ slot.0.paciente.apellidos }}</p>
                                 <p>{{ slot.0.hora_inicio }}</p>
                             </div>
                              {% elif slot.0.estado == "programada" %}
                              <div class="card" data-cita-id="{{ slot.0.id }}" id="pendent">
                                 <p>{{ slot.0.servicio }}</p>
+                                <p>{{ slot.0.paciente.nombre }}</p>
+                                    <p>{{ slot.0.paciente.apellidos }}</p>
                                 <p>{{ slot.0.hora_inicio }}</p>
                             </div>
                              {% else %}
                              <div class="card" data-cita-id="{{ slot.0.id }}" id="cancel">
                                 <p>{{ slot.0.servicio }}</p>
+                                <p>{{ slot.0.paciente.nombre }}</p>
+                                    <p>{{ slot.0.paciente.apellidos }}</p>
                                 <p>{{ slot.0.hora_inicio }}</p>
                             </div>
                              {% endif %}
@@ -63,4 +76,15 @@
         </tbody>
     </table>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    setTimeout(function() {
+        const messages = document.querySelector('.messages');
+        if (messages) {
+            messages.style.display = 'none';
+        }
+    }, 3000);
+</script>
 {% endblock %}
