@@ -23,7 +23,7 @@
                 data-id="{{ cita.id }}"
                 onclick="cargarImagenes({{ cita.id }})">
             {% if cita.estado == 'completada' %}
-                <a href="{% url 'verificar_reporte' cita.id %}" target="_blank">
+                <a href="{% url 'verificar_reporte_c' cita.id %}">
                     <span class="dot-date">{{ cita.fecha }} - {{cita.hora_inicio}}</span>
                 </a>
             {% else %}

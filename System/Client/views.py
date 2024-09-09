@@ -213,10 +213,11 @@ def obtener_imagenes_reporte(request, idCita):
     return JsonResponse({'imagenes': imagenes})    
 
 def verificar_reporte(request, cita_id):
+    print("llego")
     cita = get_object_or_404(Cita, id=cita_id)
     try:
         reporte = Reporte.objects.get(cita=cita)
-        return redirect('generate_pdf', idReporte=reporte.id)
+        return redirect('generate_pdf_c', idCita=cita_id)
     except Reporte.DoesNotExist:
         messages.error(request, "No hay reporte creado para esta cita.")
         return redirect('seguimientod')

@@ -9,7 +9,8 @@ urlpatterns = [
     path('perfil/', views.Perfil, name='perfil'),
     path('update-cliente/<int:id>/', views.update_cliente, name='update-cliente'),
     path('actualizar-cliente-profile/<int:id>/', views.actualizar_cliente, name='actualizar-cliente-profile'),
-    path('generate_pdf/<int:idCita>/', views.generate_pdf, name='generate_pdf'),
+    path('generate_pdf_c/<int:idCita>/', views.generate_pdf, name='generate_pdf_c'),
     path('seguimientoc/', views.Seguimiento, name='seguimientoc'),
     path('obtener_imagenes_reporte/<int:idCita>/', views.obtener_imagenes_reporte, name='obtener_imagenes_reporte'),
+    path('verificar_reporte/<int:cita_id>/', views.verificar_reporte, name='verificar_reporte_c'),
 ]
